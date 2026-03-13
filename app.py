@@ -31,7 +31,7 @@ with st.sidebar:
 
 # محتوى الصفحة بناءً على الاختيار
 if choice == "الرئيسية":
-    st.subheader("مرحباً بكِ في فضاء الأستاذة عائشة")
+    st.subheader("مرحباً بكِ في فضاء الأستاذ  محمد حسون")
     st.info("هذه المنصة مخصصة لدعم مربي التعليم الأولي بالمغرب عبر توفير وثائق تربوية جاهزة بجودة عالية.")
     st.image("https://via.placeholder.com/800x400.png?text=Educ-Pre-Maroc", use_column_width=True)
 
