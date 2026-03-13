@@ -1,20 +1,56 @@
 import streamlit as st
 
-st.set_page_config(page_title="Hassoun-Edu-Project", layout="centered")
+# إعدادات الصفحة والألوان
+st.set_page_config(page_title="Hassoun-Edu-Project", layout="wide")
 
-st.title("منصة التعليم الأولي بالمغرب 🇲🇦")
-st.write("مرحباً بكِ أستاذة عائشة في منصتك التربوية.")
+# إضافة لمسة جمالية بالألوان (CSS)
+st.markdown("""
+    <style>
+    .main { background-color: #f5f7f9; }
+    .stButton>button { width: 100%; border-radius: 20px; background-color: #4CAF50; color: white; }
+    h1 { color: #2E4053; text-align: center; font-family: 'Cairo', sans-serif; }
+    </style>
+    """, unsafe_allow_html=True)
 
-# هذا هو الكود المسؤول عن زر التنزيل
-try:
-    with open("document1.pdf", "rb") as file:
-        st.download_button(
-            label="تنزيل الوثيقة التربوية (PDF)",
-            data=file,
-            file_name="document1.pdf",
-            mime="application/pdf"
-        )
-except FileNotFoundError:
-    st.error("ملف الوثيقة غير موجود حالياً، يرجى التأكد من رفعه على GitHub.")
+# العنوان الرئيسي
+st.title("🌟 منصة Hassoun-Edu للوثائق التربوية")
+st.write("---")
 
-st.info("سيتم إضافة المزيد من الموارد التربوية قريباً.")
+# القائمة الجانبية للتنظيم (Sidebar)
+with st.sidebar:
+    st.header("🗂️ المحاور التربوية")
+    choice = st.radio("اختر القسم:", [
+        "الرئيسية",
+        "المذكرة اليومية",
+        "استعمال الزمن (العادي / المشترك)",
+        "الجذاذات التربوية",
+        "مذكرة الأنشطة الموازية",
+        "التوزيعات السنوية",
+        "جرد أنشطة المشاريع"
+    ])
+
+# محتوى الصفحة بناءً على الاختيار
+if choice == "الرئيسية":
+    st.subheader("مرحباً بكِ في فضاء الأستاذة عائشة")
+    st.info("هذه المنصة مخصصة لدعم مربي التعليم الأولي بالمغرب عبر توفير وثائق تربوية جاهزة بجودة عالية.")
+    st.image("https://via.placeholder.com/800x400.png?text=Educ-Pre-Maroc", use_column_width=True)
+
+elif choice == "المذكرة اليومية":
+    st.subheader("📁 المذكرة اليومية")
+    st.write("هنا ستجدين المذكرات اليومية للقسم العادي والقسم المشترك.")
+    # زر التحميل للمذكرة (الملف الذي رفعناه سابقاً)
+    try:
+        with open("document1.pdf", "rb") as file:
+            st.download_button(label="تحميل المذكرة اليومية (PDF)", data=file, file_name="daily_notes.pdf")
+    except FileNotFoundError:
+        st.warning("الملف قيد التجهيز.. سيتم رفعه قريباً.")
+
+elif choice == "استعمال الزمن (العادي / المشترك)":
+    st.subheader("⏳ استعمال الزمن")
+    st.write("نماذج متنوعة لاستعمالات الزمن.")
+    # هنا يمكن إضافة أزرار تحميل لملفات أخرى لاحقاً
+
+# ملاحظة: سنقوم بتفعيل بقية الأقسام فور تجهيز ملفاتها
+else:
+    st.subheader(f"قسم {choice}")
+    st.write("هذا القسم سيتم تزويده بالوثائق قريباً جداً.")
