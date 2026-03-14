@@ -55,7 +55,7 @@ with st.sidebar:
 st.title("🌟 منصة الوثائق التربوية")
 
 if choice == "الرئيسية":
-    st.subheader("مرحباً بكِ أستاذة عائشة")
+    st.subheader("مرحباً بك أستاذ محمد")
     st.info("منصة متكاملة لدعم مربي التعليم الأولي بالمغرب.")
     st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
 
