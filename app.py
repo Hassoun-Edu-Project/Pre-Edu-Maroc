@@ -1,74 +1,68 @@
 import streamlit as st
 
-# إعدادات الصفحة
+# 1. إعدادات الصفحة
 st.set_page_config(page_title="Hassoun-Edu-Project", layout="wide")
 
-# تصميم الواجهة بالألوان
+# 2. تصميم الواجهة بالألوان
 st.markdown("""
     <style>
     .main { background-color: #f0f2f6; }
     .stButton>button { width: 100%; border-radius: 10px; background-color: #2e7d32; color: white; height: 3em; }
-    .stRadio > label { font-weight: bold; color: #1565c0; font-size: 20px; }
     h1 { color: #1e3d59; text-align: center; border-bottom: 2px solid #1e3d59; padding-bottom: 10px; }
     </style>
     """, unsafe_allow_html=True)
 
-# العنوان الرئيسي للمنصة
 st.title("📚 منصة Hassoun-Edu للوثائق التربوية")
 
-# القائمة الجانبية (المحاور التي اقترحتِها)
+# 3. القائمة الجانبية (هنا نضع كل المحاور)
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/3426/3426653.png", width=100) # أيقونة تعليمية
     st.header("القائمة الرئيسية")
     choice = st.radio("اختر المحور:", [
         "الرئيسية",
         "المذكرة اليومية",
-        "استعمال الزمن",
         "القسم المشترك (Multiniveaux)",
+        "مذكرة الأنشطة الموازية",
         "الجذاذات التربوية",
-        "أنشطة المشاريع التربوية",
-        "التوزيعات السنوية"
+        "التوزيعات السنوية",
+        "جرد أنشطة المشاريع"
     ])
 
-# محتوى الأقسام بناءً على الاختيار
+# 4. محتوى الأقسام (الربط بين القائمة وما يظهر في الصفحة)
+
 if choice == "الرئيسية":
-    st.subheader("مرحباً بك استاذ محمد")
+    st.subheader("مرحباً بك الاستاذ محمد")
     st.info("هذه المنصة مخصصة لنشر الوثائق التربوية الخاصة بالتعليم الأولي بالمغرب.")
-    st.write("استخدمي القائمة الجانبية للتنقل بين الأقسام وتحميل الوثائق المطلوبة.")
+    st.write("استخدمي القائمة الجانبية للتنقل بين الأقسام وتحميل الوثائق.")
+
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
-    
-    col1, col2 = st.columns(2) # تقسيم الصفحة لزرين بجانب بعضهما
-    
+    col1, col2 = st.columns(2)
     with col1:
         try:
-            with open("document1.pdf", "rb") as file:
-                st.download_button(label="تحميل المذكرة (النسخة 1)", data=file, file_name="daily_note_v1.pdf")
-        except:
-            st.error("الملف الأول غير متوفر")
-
+            with open("document1.pdf", "rb") as f:
+                st.download_button("تحميل المذكرة (النسخة 1)", f, "daily_note_v1.pdf")
+        except: st.error("الملف 1 غير متوفر")
     with col2:
         try:
-            with open("cahier journal.arabe.pdf", "rb") as file:
-                st.download_button(label="تحميل المذكرة (باللغة العربية)", data=file, file_name="cahier_journal_arabe.pdf")
-        except:
-            st.warning("يرجى رفع ملف cahier journal.arabe.pdf على GitHub ليظهر هنا.")
+            with open("cahier journal.arabe.pdf", "rb") as f:
+                st.download_button("تحميل المذكرة (بالعربية)", f, "cahier_journal_arabe.pdf")
+        except: st.error("الملف العربي غير متوفر")
 
-elif choice == "القسم المشترك (Multiniveaux)":
-    st.subheader("👥 قسم القسم المشترك (Multiniveaux)")
-    st.write("هنا تجدون الوثائق الخاصة بتنظيم الأقسام المشتركة.")
-    
-    # إضافة زر تحميل لاستعمال زمن الدخول المدرسي
+elif choice == "الالقسم المشترك (Multiniveaux)":
+    st.subheader("👥 قسم القسم المشترك")
     try:
-        with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as file:
-            st.download_button(
-                label="تحميل استعمال زمن القسم المشترك (الدخول المدرسي)",
-                data=file,
-                file_name="emploi_temps_multi.pdf",
-                mime="application/pdf"
-            )
-    except FileNotFoundError:
-        st.warning("يرجى رفع ملف emploi_temps_multi.la rentrée scolaire.pdf لتفعيل التحميل.")
+        with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as f:
+            st.download_button("تحميل استعمال زمن القسم المشترك", f, "emploi_temps_multi.pdf")
+    except: st.warning("يرجى رفع ملف القسم المشترك")
 
-    st.divider() # خط فاصل لإضافة وثائق أخرى لاحقاً
-    st.info("سيتم إضافة المذكرة اليومية للقسم المشترك قريباً.")
+elif choice == "مذكرة الأنشطة الموازية":
+    st.subheader("🎨 مذكرة وجذاذات الأنشطة الموازية")
+    try:
+        with open("fiche_pedagogique.pdf", "rb") as f:
+            st.download_button("تحميل جذاذة الأنشطة الموازية", f, "fiche_activites_paralleles.pdf")
+    except: st.warning("يرجى رفع ملف fiche_pedagogique.pdf")
+
+else:
+    # هذا الجزء يغطي بقية الأقسام التي لم نضع لها ملفات بعد
+    st.subheader(f"📂 {choice}")
+    st.write("سيتم تزويد هذا القسم بالوثائق قريباً.")
