@@ -58,8 +58,14 @@ if choice == "الرئيسية":
     st.subheader("مرحباً بكم في منصة Hassoun-Edu")
     st.info("فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي بالمغرب.")
     
-    # صورة تعبر عن أقسام التعليم الأولي بالمغرب
-    st.image("https://www.fmps.ma/images/slideshow/slide1.jpg", caption="بيئة تعليمية محفزة للطفل", use_column_width=True)
+    # محاولة قراءة الصورة من ملفاتك على GitHub
+    try:
+        st.image("fmps_classroom.jpg", caption="نموذج من أقسام المؤسسة المغربية للتعليم الأولي", use_column_width=True)
+    except:
+        st.warning("يرجى رفع صورة باسم fmps_classroom.jpg لتظهر هنا.")
+    
+    st.markdown("---")
+    st.write("هدفنا هو تيسير الوصول للوثائق التربوية لضمان جودة التعليم في مرحلة ما قبل التمدرس.")
     
     st.markdown("---")
     st.write("هدفنا هو تيسير الوصول للوثائق التربوية لضمان جودة التعليم في مرحلة ما قبل التمدرس.")
