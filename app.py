@@ -1,56 +1,55 @@
 import streamlit as st
 
-# إعدادات الصفحة والألوان
+# إعدادات الصفحة
 st.set_page_config(page_title="Hassoun-Edu-Project", layout="wide")
 
-# إضافة لمسة جمالية بالألوان (CSS)
+# تصميم الواجهة بالألوان
 st.markdown("""
     <style>
-    .main { background-color: #f5f7f9; }
-    .stButton>button { width: 100%; border-radius: 20px; background-color: #4CAF50; color: white; }
-    h1 { color: #2E4053; text-align: center; font-family: 'Cairo', sans-serif; }
+    .main { background-color: #f0f2f6; }
+    .stButton>button { width: 100%; border-radius: 10px; background-color: #2e7d32; color: white; height: 3em; }
+    .stRadio > label { font-weight: bold; color: #1565c0; font-size: 20px; }
+    h1 { color: #1e3d59; text-align: center; border-bottom: 2px solid #1e3d59; padding-bottom: 10px; }
     </style>
     """, unsafe_allow_html=True)
 
-# العنوان الرئيسي
-st.title("🌟 منصة Hassoun-Edu للوثائق التربوية")
-st.write("---")
+# العنوان الرئيسي للمنصة
+st.title("📚 منصة Hassoun-Edu للوثائق التربوية")
 
-# القائمة الجانبية للتنظيم (Sidebar)
+# القائمة الجانبية (المحاور التي اقترحتِها)
 with st.sidebar:
-    st.header("🗂️ المحاور التربوية")
-    choice = st.radio("اختر القسم:", [
+    st.image("https://cdn-icons-png.flaticon.com/512/3426/3426653.png", width=100) # أيقونة تعليمية
+    st.header("القائمة الرئيسية")
+    choice = st.radio("اختر المحور:", [
         "الرئيسية",
         "المذكرة اليومية",
-        "استعمال الزمن (العادي / المشترك)",
+        "استعمال الزمن",
+        "القسم المشترك (Multiniveaux)",
         "الجذاذات التربوية",
-        "مذكرة الأنشطة الموازية",
-        "التوزيعات السنوية",
-        "جرد أنشطة المشاريع"
+        "أنشطة المشاريع التربوية",
+        "التوزيعات السنوية"
     ])
 
-# محتوى الصفحة بناءً على الاختيار
+# محتوى الأقسام بناءً على الاختيار
 if choice == "الرئيسية":
-    st.subheader("مرحباً بكِ في فضاء الأستاذ  محمد حسون")
-    st.info("هذه المنصة مخصصة لدعم مربي التعليم الأولي بالمغرب عبر توفير وثائق تربوية جاهزة بجودة عالية.")
-    st.image("https://via.placeholder.com/800x400.png?text=Educ-Pre-Maroc", use_column_width=True)
+    st.subheader("مرحباً بكِ أستاذة عائشة")
+    st.info("هذه المنصة مخصصة لنشر الوثائق التربوية الخاصة بالتعليم الأولي بالمغرب.")
+    st.write("استخدمي القائمة الجانبية للتنقل بين الأقسام وتحميل الوثائق المطلوبة.")
 
 elif choice == "المذكرة اليومية":
-    st.subheader("📁 المذكرة اليومية")
-    st.write("هنا ستجدين المذكرات اليومية للقسم العادي والقسم المشترك.")
-    # زر التحميل للمذكرة (الملف الذي رفعناه سابقاً)
+    st.subheader("📁 قسم المذكرة اليومية")
+    # زر التحميل للملف الذي رفعناه سابقاً
     try:
         with open("document1.pdf", "rb") as file:
-            st.download_button(label="تحميل المذكرة اليومية (PDF)", data=file, file_name="daily_notes.pdf")
-    except FileNotFoundError:
-        st.warning("الملف قيد التجهيز.. سيتم رفعه قريباً.")
+            st.download_button(label="تحميل المذكرة اليومية (PDF)", data=file, file_name="daily_note.pdf")
+    except:
+        st.error("الملف غير متوفر حالياً.")
 
-elif choice == "استعمال الزمن (العادي / المشترك)":
-    st.subheader("⏳ استعمال الزمن")
-    st.write("نماذج متنوعة لاستعمالات الزمن.")
-    # هنا يمكن إضافة أزرار تحميل لملفات أخرى لاحقاً
+elif choice == "القسم المشترك (Multiniveaux)":
+    st.subheader("👥 قسم القسم المشترك")
+    st.write("يتضمن هذا القسم المذكرة اليومية واستعمال الزمن الخاص بالأقسام المشتركة.")
+    # سنضيف أزرار التحميل هنا فور رفع ملفاتها
 
-# ملاحظة: سنقوم بتفعيل بقية الأقسام فور تجهيز ملفاتها
 else:
-    st.subheader(f"قسم {choice}")
-    st.write("هذا القسم سيتم تزويده بالوثائق قريباً جداً.")
+    st.subheader(f"📂 {choice}")
+    st.write("سيتم تزويد هذا القسم بالوثائق قريباً جداً.")
