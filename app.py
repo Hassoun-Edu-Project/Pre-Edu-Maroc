@@ -64,11 +64,12 @@ with st.sidebar:
 # 4. محتوى الأقسام (نفس الروابط التي نجحت معكِ)
 st.title("🌟 منصة الوثائق التربوية")
 
+# ابحثي عن هذا الجزء في الكود وقومي بتحديث الرابط فقط، أو انسخي الكود كاملاً
 if choice == "الرئيسية":
-    st.subheader("مرحباً بكِ أستاذة عائشة")
+    st.subheader("مرحباً بك أستاذ محمد")
     st.info("منصة متكاملة لدعم مربي التعليم الأولي بالمغرب.")
-    st.image("https://img.freepik.com/free-vector/hand-drawn-back-school-background_23-2149031175.jpg", use_column_width=True)
-
+    # الرابط الجديد لصورة أطفال التعليم الأولي
+    st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
     col1, col2 = st.columns(2)
