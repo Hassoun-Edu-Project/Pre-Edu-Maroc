@@ -55,10 +55,20 @@ elif choice == "المذكرة اليومية":
             st.warning("يرجى رفع ملف cahier journal.arabe.pdf على GitHub ليظهر هنا.")
 
 elif choice == "القسم المشترك (Multiniveaux)":
-    st.subheader("👥 قسم القسم المشترك")
-    st.write("يتضمن هذا القسم المذكرة اليومية واستعمال الزمن الخاص بالأقسام المشتركة.")
-    # سنضيف أزرار التحميل هنا فور رفع ملفاتها
+    st.subheader("👥 قسم القسم المشترك (Multiniveaux)")
+    st.write("هنا تجدون الوثائق الخاصة بتنظيم الأقسام المشتركة.")
+    
+    # إضافة زر تحميل لاستعمال زمن الدخول المدرسي
+    try:
+        with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as file:
+            st.download_button(
+                label="تحميل استعمال زمن القسم المشترك (الدخول المدرسي)",
+                data=file,
+                file_name="emploi_temps_multi.pdf",
+                mime="application/pdf"
+            )
+    except FileNotFoundError:
+        st.warning("يرجى رفع ملف emploi_temps_multi.la rentrée scolaire.pdf لتفعيل التحميل.")
 
-else:
-    st.subheader(f"📂 {choice}")
-    st.write("سيتم تزويد هذا القسم بالوثائق قريباً جداً.")
+    st.divider() # خط فاصل لإضافة وثائق أخرى لاحقاً
+    st.info("سيتم إضافة المذكرة اليومية للقسم المشترك قريباً.")
