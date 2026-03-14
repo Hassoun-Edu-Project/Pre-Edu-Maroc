@@ -97,7 +97,25 @@ elif choice == "مذكرة الأنشطة الموازية":
         with open("fiche_pedagogique.pdf", "rb") as f:
             st.download_button("📥 تحميل الجذاذة", f, "fiche_activites_paralleles.pdf")
     except: st.warning("يرجى رفع ملف fiche_pedagogique.pdf")
+# ... (كود الأنشطة الموازية السابق)
 
+elif choice == "التوزيعات السنوية":
+    st.subheader("🗓️ قسم التوزيعات السنوية")
+    # هنا نضع كودكِ الذي كتبتِهِ بحرفية:
+    try:
+        with open("distribution.pdf", "rb") as file:
+            st.download_button(
+                label="تحميل التوزيع السنوي",
+                data=file,
+                file_name="annual_plan.pdf"
+            )
+    except FileNotFoundError:
+        st.warning("تنبيه: هذا الملف غير موجود حالياً على GitHub.")
+
+# هذا السطر يبقى دائماً هو الأخير
+else:
+    st.subheader(f"📂 {choice}")
+    st.write("سيتم تزويد هذا القسم بالوثائق قريباً.")
 else:
     st.subheader(f"📂 {choice}")
     st.write("هذا القسم سيتم تزويده بالوثائق قريباً.")
