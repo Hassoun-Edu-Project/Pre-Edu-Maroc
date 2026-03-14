@@ -6,28 +6,21 @@ st.set_page_config(page_title="Hassoun-Edu-Project", layout="wide")
 # 2. لمسات احترافية بالألوان (CSS)
 st.markdown("""
     <style>
-    /* تغيير لون الخلفية العامة */
     .main { background-color: #fdfefe; }
-    
-    /* تنسيق الأزرار */
     .stButton>button { 
         width: 100%; 
         border-radius: 25px; 
-        background-color: #2e7d32; /* أخضر تربوي */
+        background-color: #2e7d32; 
         color: white; 
         height: 3.5em;
         font-weight: bold;
         border: none;
         transition: 0.3s;
     }
-    
-    /* تغيير لون الزر عند تمرير الفأرة */
     .stButton>button:hover {
         background-color: #1b5e20;
         border: 2px solid #a5d6a7;
     }
-
-    /* تنسيق العنوان الرئيسي */
     h1 { 
         color: #1e3d59; 
         text-align: center; 
@@ -36,8 +29,6 @@ st.markdown("""
         background: #e3f2fd;
         border-radius: 15px;
     }
-    
-    /* تنسيق القائمة الجانبية */
     section[data-testid="stSidebar"] {
         background-color: #f1f8e9;
     }
@@ -46,7 +37,6 @@ st.markdown("""
 
 # 3. القائمة الجانبية مع الشعار
 with st.sidebar:
-    # إضافة شعار (يمكنكِ تغيير الرابط لاحقاً بشعارك الخاص)
     st.image("https://cdn-icons-png.flaticon.com/512/3976/3976625.png", width=120)
     st.title("Hassoun-Edu")
     st.markdown("---")
@@ -61,15 +51,14 @@ with st.sidebar:
         "جرد أنشطة المشاريع"
     ])
 
-# 4. محتوى الأقسام (نفس الروابط التي نجحت معكِ)
+# 4. محتوى الأقسام
 st.title("🌟 منصة الوثائق التربوية")
 
-# ابحثي عن هذا الجزء في الكود وقومي بتحديث الرابط فقط، أو انسخي الكود كاملاً
 if choice == "الرئيسية":
-    st.subheader("مرحباً بك أستاذ محمد")
+    st.subheader("مرحباً بكِ أستاذة عائشة")
     st.info("منصة متكاملة لدعم مربي التعليم الأولي بالمغرب.")
-    # الرابط الجديد لصورة أطفال التعليم الأولي
     st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
+
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
     col1, col2 = st.columns(2)
@@ -84,7 +73,7 @@ elif choice == "المذكرة اليومية":
                 st.download_button("📥 تحميل المذكرة (بالعربية)", f, "cahier_journal_arabe.pdf")
         except: st.error("الملف العربي غير متوفر")
 
-elif choice == "الالقسم المشترك (Multiniveaux)":
+elif choice == "القسم المشترك (Multiniveaux)":
     st.subheader("👥 قسم القسم المشترك")
     try:
         with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as f:
@@ -97,11 +86,9 @@ elif choice == "مذكرة الأنشطة الموازية":
         with open("fiche_pedagogique.pdf", "rb") as f:
             st.download_button("📥 تحميل الجذاذة", f, "fiche_activites_paralleles.pdf")
     except: st.warning("يرجى رفع ملف fiche_pedagogique.pdf")
-# ... (كود الأنشطة الموازية السابق)
 
 elif choice == "التوزيعات السنوية":
     st.subheader("🗓️ قسم التوزيعات السنوية")
-    # هنا نضع كودكِ الذي كتبتِهِ بحرفية:
     try:
         with open("distribution.pdf", "rb") as file:
             st.download_button(
@@ -112,10 +99,7 @@ elif choice == "التوزيعات السنوية":
     except FileNotFoundError:
         st.warning("تنبيه: هذا الملف غير موجود حالياً على GitHub.")
 
-# هذا السطر يبقى دائماً هو الأخير
-else:
-    st.subheader(f"📂 {choice}")
-    st.write("سيتم تزويد هذا القسم بالوثائق قريباً.")
+# هذا الجزء يظهر للأقسام التي لم نضع لها كوداً خاصاً بعد مثل (جرد أنشطة المشاريع)
 else:
     st.subheader(f"📂 {choice}")
     st.write("هذا القسم سيتم تزويده بالوثائق قريباً.")
