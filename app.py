@@ -35,15 +35,24 @@ if choice == "الرئيسية":
     st.subheader("مرحباً بك استاذ محمد")
     st.info("هذه المنصة مخصصة لنشر الوثائق التربوية الخاصة بالتعليم الأولي بالمغرب.")
     st.write("استخدمي القائمة الجانبية للتنقل بين الأقسام وتحميل الوثائق المطلوبة.")
-
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
-    # زر التحميل للملف الذي رفعناه سابقاً
-    try:
-        with open("document1.pdf", "rb") as file:
-            st.download_button(label="تحميل المذكرة اليومية (PDF)", data=file, file_name="daily_note.pdf")
-    except:
-        st.error("الملف غير متوفر حالياً.")
+    
+    col1, col2 = st.columns(2) # تقسيم الصفحة لزرين بجانب بعضهما
+    
+    with col1:
+        try:
+            with open("document1.pdf", "rb") as file:
+                st.download_button(label="تحميل المذكرة (النسخة 1)", data=file, file_name="daily_note_v1.pdf")
+        except:
+            st.error("الملف الأول غير متوفر")
+
+    with col2:
+        try:
+            with open("cahier journal.arabe.pdf", "rb") as file:
+                st.download_button(label="تحميل المذكرة (باللغة العربية)", data=file, file_name="cahier_journal_arabe.pdf")
+        except:
+            st.warning("يرجى رفع ملف cahier journal.arabe.pdf على GitHub ليظهر هنا.")
 
 elif choice == "القسم المشترك (Multiniveaux)":
     st.subheader("👥 قسم القسم المشترك")
