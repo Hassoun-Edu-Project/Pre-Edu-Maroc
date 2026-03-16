@@ -85,10 +85,17 @@ elif choice == "القسم المشترك (Multiniveaux)":
 
 elif choice == "مذكرة الأنشطة الموازية":
     st.subheader("🎨 مذكرة الأنشطة الموازية")
+    st.info("يمكنكم تحميل مذكرة الأنشطة الموازية من الرابط أدناه:")
     try:
-        with open("fiche_pedagogique.pdf", "rb") as f:
-            st.download_button("📥 تحميل الجذاذة", f, "fiche_activites_paralleles.pdf")
-    except: st.warning("يرجى رفع ملف fiche_pedagogique.pdf")
+        # التحديث للاسم الجديد الذي اخترتِه
+        with open("cahier journal_activites_paralleles.pdf", "rb") as f:
+            st.download_button(
+                label="📥 تحميل مذكرة الأنشطة الموازية", 
+                data=f, 
+                file_name="cahier_journal_activites_paralleles.pdf"
+            )
+    except FileNotFoundError:
+        st.warning("تنبيه: ملف cahier journal_activites_paralleles.pdf غير موجود حالياً على GitHub.")
 
 elif choice == "الجذاذات التربوية":
     st.subheader("📝 قسم الجذاذات التربوية")
