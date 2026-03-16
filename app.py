@@ -47,6 +47,7 @@ with st.sidebar:
         "القسم المشترك (Multiniveaux)",
         "مذكرة الأنشطة الموازية",
         "الجذاذات التربوية",
+        "تقييم كفايات الأطفال",
         "التوزيعات السنوية",
         "جرد أنشطة المشاريع"
     ])
@@ -58,11 +59,9 @@ if choice == "الرئيسية":
     st.subheader("مرحباً بكم في منصة Hassoun-Edu")
     st.info("فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي بالمغرب.")
     
-    # عرض صورتك الجديدة التي رفعتها
     try:
         st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز", use_column_width=True)
     except:
-        # في حال حدوث خطأ في الاسم تظهر الصورة المؤقتة كاحتياط
         st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
     
     st.markdown("---")
@@ -96,15 +95,29 @@ elif choice == "مذكرة الأنشطة الموازية":
             st.download_button("📥 تحميل الجذاذة", f, "fiche_activites_paralleles.pdf")
     except: st.warning("يرجى رفع ملف fiche_pedagogique.pdf")
 
-# --- القسم الجديد الذي أضفناه هنا ---
 elif choice == "الجذاذات التربوية":
     st.subheader("📝 قسم الجذاذات التربوية")
     st.info("يمكنكم تحميل نماذج الجذاذات التربوية من الروابط أدناه:")
     try:
-        with open("fiche_pedagogique.pdf", "rb") as f: # استخدمت نفس اسم ملفك للتجربة
+        with open("fiche_pedagogique.pdf", "rb") as f:
             st.download_button("📥 تحميل جذاذة النشاط", f, "fiche_pedagogique.pdf")
     except: 
         st.warning("يرجى رفع ملف الجذاذة (fiche_pedagogique.pdf) لتفعيل التحميل.")
+
+# --- القسم الجديد: تقييم كفايات الأطفال ---
+elif choice == "تقييم كفايات الأطفال":
+    st.subheader("📊 قسم تقييم كفايات الأطفال")
+    st.info("جدولة تنفيذ تقييم كفايات الأطفال - السنة الدراسية 2025-2026")
+    try:
+        file_name = "Calendrier de mise en oeuvre de l'évaluation des compétences des enfants-Année scolaire 2025-2026.pdf"
+        with open(file_name, "rb") as f:
+            st.download_button(
+                label="📥 تحميل جدولة تنفيذ تقييم الكفايات",
+                data=f,
+                file_name="Calendrier_Evaluation_2025_2026.pdf"
+            )
+    except:
+        st.warning("تنبيه: ملف الجدولة غير موجود حالياً على GitHub. يرجى رفعه لتفعيل التحميل.")
 
 elif choice == "التوزيعات السنوية":
     st.subheader("🗓️ قسم التوزيعات السنوية")
@@ -118,7 +131,18 @@ elif choice == "التوزيعات السنوية":
     except FileNotFoundError:
         st.warning("تنبيه: هذا الملف غير موجود حالياً على GitHub.")
 
-# هذا الجزء يظهر للأقسام المتبقية مثل (جرد أنشطة المشاريع)
+elif choice == "جرد أنشطة المشاريع":
+    st.subheader("📋 جرد أنشطة المشاريع التربوية")
+    try:
+        with open("distribution.pdf", "rb") as file:
+            st.download_button(
+                label="📥 تحميل التوزيع السنوي للمشاريع",
+                data=file,
+                file_name="distribution_projets.pdf"
+            )
+    except FileNotFoundError:
+        st.warning("تنبيه: ملف distribution.pdf غير موجود.")
+
 else:
     st.subheader(f"📂 {choice}")
     st.write("هذا القسم سيتم تزويده بالوثائق قريباً.")
