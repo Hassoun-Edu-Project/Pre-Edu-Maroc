@@ -35,7 +35,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. القائمة الجانبية مع الشعار
+# 3. القائمة الجانبية
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3976/3976625.png", width=120)
     st.title("Hassoun-Edu")
@@ -48,8 +48,7 @@ with st.sidebar:
         "مذكرة الأنشطة الموازية",
         "الجذاذات التربوية",
         "تقييم كفايات الأطفال",
-        "التوزيعات السنوية",
-        "جرد أنشطة المشاريع"
+        "التوزيعات السنوية"
     ])
 
 # 4. محتوى الأقسام
@@ -57,15 +56,11 @@ st.title("🌟 منصة الوثائق التربوية")
 
 if choice == "الرئيسية":
     st.subheader("مرحباً بكم في منصة Hassoun-Edu")
-    st.info("فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي بالمغرب.")
-    
+    st.info("فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي.")
     try:
         st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز", use_column_width=True)
     except:
         st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
-    
-    st.markdown("---")
-    st.write("هدفنا هو تيسير الوصول للوثائق التربوية لضمان جودة التعليم في مرحلة ما قبل التمدرس.")
 
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
@@ -97,52 +92,40 @@ elif choice == "مذكرة الأنشطة الموازية":
 
 elif choice == "الجذاذات التربوية":
     st.subheader("📝 قسم الجذاذات التربوية")
-    st.info("يمكنكم تحميل نماذج الجذاذات التربوية من الروابط أدناه:")
     try:
         with open("fiche_pedagogique.pdf", "rb") as f:
             st.download_button("📥 تحميل جذاذة النشاط", f, "fiche_pedagogique.pdf")
-    except: 
-        st.warning("يرجى رفع ملف الجذاذة (fiche_pedagogique.pdf) لتفعيل التحميل.")
+    except: st.warning("الملف غير متوفر")
 
-# --- القسم الجديد: تقييم كفايات الأطفال ---
 elif choice == "تقييم كفايات الأطفال":
-    st.subheader("📊 قسم تقييم كفايات الأطفال")
-    st.info("جدولة تنفيذ تقييم كفايات الأطفال - السنة الدراسية 2025-2026")
+    st.subheader("📊 تقييم كفايات الأطفال")
     try:
-        file_name = "Calendrier de mise en oeuvre de l'évaluation des compétences des enfants-Année scolaire 2025-2026.pdf"
-        with open(file_name, "rb") as f:
-            st.download_button(
-                label="📥 تحميل جدولة تنفيذ تقييم الكفايات",
-                data=f,
-                file_name="Calendrier_Evaluation_2025_2026.pdf"
-            )
-    except:
-        st.warning("تنبيه: ملف الجدولة غير موجود حالياً على GitHub. يرجى رفعه لتفعيل التحميل.")
+        file_path = "Calendrier de mise en oeuvre de l'évaluation des compétences des enfants-Année scolaire 2025-2026.pdf"
+        with open(file_path, "rb") as f:
+            st.download_button("📥 تحميل جدولة التقييمات", f, "Calendrier_Evaluation.pdf")
+    except: st.warning("يرجى رفع ملف التقييمات")
 
+# --- دمج التوزيعات في صفحة واحدة ---
 elif choice == "التوزيعات السنوية":
     st.subheader("🗓️ قسم التوزيعات السنوية")
-    try:
-        with open("distribution.pdf", "rb") as file:
-            st.download_button(
-                label="تحميل التوزيع السنوي",
-                data=file,
-                file_name="annual_plan.pdf"
-            )
-    except FileNotFoundError:
-        st.warning("تنبيه: هذا الملف غير موجود حالياً على GitHub.")
-
-elif choice == "جرد أنشطة المشاريع":
-    st.subheader("📋 جرد أنشطة المشاريع التربوية")
-    try:
-        with open("distribution.pdf", "rb") as file:
-            st.download_button(
-                label="📥 تحميل التوزيع السنوي للمشاريع",
-                data=file,
-                file_name="distribution_projets.pdf"
-            )
-    except FileNotFoundError:
-        st.warning("تنبيه: ملف distribution.pdf غير موجود.")
+    st.write("اختر نوع التوزيع الذي ترغب في تحميله:")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("### 📜 التوزيع السنوي العام")
+        try:
+            with open("distribution.pdf", "rb") as f:
+                st.download_button("📥 تحميل التوزيع العام", f, "annual_plan.pdf")
+        except: st.error("ملف distribution.pdf غير متوفر")
+        
+    with col2:
+        st.markdown("### 📂 التوزيع الموضوعاتي")
+        try:
+            with open("distribution1.pdf", "rb") as f:
+                st.download_button("📥 تحميل توزيع المشاريع", f, "distribution_thematique.pdf")
+        except: st.error("ملف distribution1.pdf غير متوفر")
 
 else:
     st.subheader(f"📂 {choice}")
-    st.write("هذا القسم سيتم تزويده بالوثائق قريباً.")
+    st.write("سيتم التزويد قريباً.")
