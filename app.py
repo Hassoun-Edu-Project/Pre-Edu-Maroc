@@ -57,7 +57,14 @@ st.title("🌟 منصة الوثائق التربوية")
 if choice == "الرئيسية":
     st.subheader("مرحباً بكم في منصة Hassoun-Edu")
     st.info("فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي بالمغرب.")
-    st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", caption="بيئة تعليمية مبهجة للأطفال", use_column_width=True)
+    
+    # عرض صورتك الجديدة التي رفعتها
+    try:
+        st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز", use_column_width=True)
+    except:
+        # في حال حدوث خطأ في الاسم تظهر الصورة المؤقتة كاحتياط
+        st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
+    
     st.markdown("---")
     st.write("هدفنا هو تيسير الوصول للوثائق التربوية لضمان جودة التعليم في مرحلة ما قبل التمدرس.")
 
