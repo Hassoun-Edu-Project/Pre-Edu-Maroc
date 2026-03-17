@@ -83,7 +83,7 @@ if choice == "الرئيسية":
     """, unsafe_allow_html=True)
 
     try:
-        st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز - المربية عائشة", use_column_width=True)
+        st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز - الأستاذ محمد حسون", use_column_width=True)
     except:
         st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
     
