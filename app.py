@@ -67,17 +67,28 @@ if choice == "الرئيسية":
 
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
-    col1, col2 = st.columns(2)
+    st.info("اختر النسخة التي ترغب في تحميلها:")
+    
+    col1, col2, col3 = st.columns(3) # أضفنا عموداً ثالثاً للنسخة الفرنسية
+    
     with col1:
         try:
             with open("document1.pdf", "rb") as f:
-                st.download_button("📥 تحميل المذكرة (V1)", f, "daily_note_v1.pdf")
-        except: st.error("الملف 1 غير متوفر")
+                st.download_button("📥 المذكرة (V1)", f, "daily_note_v1.pdf")
+        except: st.error("نسخة V1 غير متوفرة")
+        
     with col2:
         try:
             with open("cahier journal.arabe.pdf", "rb") as f:
-                st.download_button("📥 تحميل المذكرة (بالعربية)", f, "cahier_journal_arabe.pdf")
-        except: st.error("الملف العربي غير متوفر")
+                st.download_button("📥 المذكرة (بالعربية)", f, "daily_note_ar.pdf")
+        except: st.error("النسخة العربية غير متوفرة")
+        
+    with col3:
+        try:
+            # النسخة الفرنسية الجديدة
+            with open("cahier journal.pdf", "rb") as f:
+                st.download_button("📥 Cahier Journal (FR)", f, "cahier_journal_fr.pdf")
+        except: st.error("النسخة الفرنسية غير متوفرة")
 
 elif choice == "القسم المشترك (Multiniveaux)":
     st.subheader("👥 قسم القسم المشترك")
