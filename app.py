@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 1. إعدادات الصفحة
+# 1. إعدادات الصفحة والوصف عند المشاركة
 st.set_page_config(
     page_title="Hassoun-Edu | فضاء الوثائق التربوية", 
     page_icon="🎓", 
@@ -60,7 +60,7 @@ with st.sidebar:
         "الرئيسية",
         "المذكرة اليومية",
         "استعمالات الزمن (Emploi du temps)",
-        "المعينات الديداكتيكية (صور)", # القسم الجديد
+        "المعينات الديداكتيكية (صور)", 
         "مذكرة الأنشطة الموازية",
         "الجذاذات التربوية",
         "تقييم كفايات الأطفال",
@@ -123,29 +123,50 @@ elif choice == "المعينات الديداكتيكية (صور)":
         st.write("سيتم رفع الصور قريباً...")
 
     with tab2:
-        st.success("🌙 ركن شهر رمضان المبارك")
-        # إنشاء معرض صور بنظام الأعمدة
+        st.success("🌙 معرض صور شهر رمضان المبارك")
+        st.write("صور جاهزة للاستعمال في التزيين والأنشطة:")
+        
+        # إنشاء المعرض بنظام الشبكة (Grid) - 3 أعمدة
         col1, col2, col3 = st.columns(3)
         
+        # الصف الأول
         with col1:
             try:
-                # صورة 1 (يجب أن يكون الملف موجوداً في GitHub بنفس الاسم)
+                # صورة 1 (يجب رفع الملف ramadan_1.jpg على GitHub)
                 st.image("ramadan_1.jpg", caption="زينة رمضان", use_column_width=True)
             except: st.warning("صورة 1 قيد الرفع")
             
         with col2:
             try:
-                st.image("ramadan_2.jpg", caption="فانوس رمضان", use_column_width=True)
+                st.image("ramadan_2.jpg", caption="فانوس رمضان للأطفال", use_column_width=True)
             except: st.warning("صورة 2 قيد الرفع")
             
         with col3:
             try:
-                st.image("ramadan_3.jpg", caption="إمساكية رمضان للأطفال", use_column_width=True)
+                st.image("ramadan_3.jpg", caption="بطاقة تهنئة رمضان", use_column_width=True)
             except: st.warning("صورة 3 قيد الرفع")
+        
+        # الصف الثاني (الأعمدة الإضافية)
+        col4, col5, col6 = st.columns(3)
+        
+        with col4:
+            try:
+                st.image("ramadan_4.jpg", caption="رمضان كريم", use_column_width=True)
+            except: st.warning("صورة 4 قيد الرفع")
+            
+        with col5:
+            try:
+                st.image("ramadan_5.jpg", caption="نشاط للأطفال", use_column_width=True)
+            except: st.warning("صورة 5 قيد الرفع")
+            
+        with col6:
+            # عمود فارغ للحفاظ على التنسيق
+            st.write("")
 
     with tab3:
         st.info("ملصقات وصور خاصة بالمناسبات الوطنية المغربية")
         st.write("سيتم رفع الصور قريباً...")
+
 elif choice == "مذكرة الأنشطة الموازية":
     st.subheader("🎨 مذكرة الأنشطة الموازية")
     try:
