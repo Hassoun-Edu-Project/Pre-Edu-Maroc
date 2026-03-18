@@ -47,6 +47,13 @@ st.markdown("""
         border-right: 5px solid #2e7d32; 
         margin-bottom: 20px;
     }
+    .level-box {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -59,7 +66,7 @@ with st.sidebar:
     choice = st.radio("انتقل إلى:", [
         "الرئيسية",
         "المذكرة اليومية",
-        "القسم المشترك (Multiniveaux)",
+        "استعمالات الزمن (Emploi du temps)",
         "مذكرة الأنشطة الموازية",
         "الجذاذات التربوية",
         "تقييم كفايات الأطفال",
@@ -73,7 +80,6 @@ st.title("🌟 منصة الوثائق التربوية")
 if choice == "الرئيسية":
     st.subheader("مرحباً بكم في منصة Hassoun-Edu")
     
-    # العبارة الشارحة لتعزيز الموثوقية
     st.markdown("""
         <div class="trust-box">
             <p style="color: #2e7d32; font-size: 1.1em; font-weight: bold; margin: 0;">
@@ -107,17 +113,46 @@ elif choice == "المذكرة اليومية":
         except: st.error("النسخة العربية غير متوفرة")
     with col3:
         try:
-            # النسخة الفرنسية الجديدة التي أضفتِها
             with open("cahier journal.pdf", "rb") as f:
                 st.download_button("📥 Cahier Journal (FR)", f, "cahier_journal_fr.pdf")
         except: st.error("النسخة الفرنسية غير متوفرة")
 
-elif choice == "القسم المشترك (Multiniveaux)":
-    st.subheader("👥 قسم القسم المشترك")
+elif choice == "استعمالات الزمن (Emploi du temps)":
+    st.subheader("🕒 قسم استعمالات الزمن")
+    st.write("نضع بين أيديكم نماذج متنوعة لاستعمالات الزمن حسب المستويات:")
+    
+    # إضافة ملف أسبوع الاستئناس في الأعلى لأنه مهم جداً حالياً
+    st.success("✨ ملف جديد: أسبوع الاستئناس")
     try:
-        with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as f:
-            st.download_button("📥 تحميل استعمال الزمن", f, "emploi_temps_multi.pdf")
-    except: st.warning("يرجى رفع ملف القسم المشترك")
+        with open("takayof.pdf", "rb") as f:
+            st.download_button("📥 تحميل برنامج أسبوع الاستئناس (Takayof)", f, "semaine_adaptation.pdf")
+    except: st.warning("يرجى رفع ملف takayof.pdf على GitHub")
+    
+    st.markdown("---")
+    
+    # تقسيم الفروع إلى 3 أعمدة
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("### 👥 القسم المشترك")
+        try:
+            with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as f:
+                st.download_button("📥 تحميل (Multi-niveaux)", f, "emploi_multi.pdf")
+        except: st.error("الملف غير متوفر")
+
+    with col2:
+        st.markdown("### 👶 التمهيدي الأول")
+        try:
+            with open("emploi_temps_ps.pdf", "rb") as f:
+                st.download_button("📥 تحميل (Moyenne Section)", f, "emploi_PS.pdf")
+        except: st.info("سيتم إضافة الملف قريباً")
+
+    with col3:
+        st.markdown("### 👦 التمهيدي الثاني")
+        try:
+            with open("emploi_temps_gs.pdf", "rb") as f:
+                st.download_button("📥 تحميل (Grande Section)", f, "emploi_GS.pdf")
+        except: st.info("سيتم إضافة الملف قريباً")
 
 elif choice == "مذكرة الأنشطة الموازية":
     st.subheader("🎨 مذكرة الأنشطة الموازية")
