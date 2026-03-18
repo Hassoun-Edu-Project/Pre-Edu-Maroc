@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 1. إعدادات الصفحة والوصف الذي يظهر عند مشاركة الرابط
+# 1. إعدادات الصفحة
 st.set_page_config(
     page_title="Hassoun-Edu | فضاء الوثائق التربوية", 
     page_icon="🎓", 
@@ -47,13 +47,6 @@ st.markdown("""
         border-right: 5px solid #2e7d32; 
         margin-bottom: 20px;
     }
-    .level-box {
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 15px;
-        border: 1px solid #ddd;
-        text-align: center;
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -67,6 +60,7 @@ with st.sidebar:
         "الرئيسية",
         "المذكرة اليومية",
         "استعمالات الزمن (Emploi du temps)",
+        "المعينات الديداكتيكية (صور)", # القسم الجديد
         "مذكرة الأنشطة الموازية",
         "الجذاذات التربوية",
         "تقييم كفايات الأطفال",
@@ -79,123 +73,99 @@ st.title("🌟 منصة الوثائق التربوية")
 
 if choice == "الرئيسية":
     st.subheader("مرحباً بكم في منصة Hassoun-Edu")
-    
-    st.markdown("""
-        <div class="trust-box">
-            <p style="color: #2e7d32; font-size: 1.1em; font-weight: bold; margin: 0;">
-                📢 فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي بالمغرب.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-
+    st.markdown('<div class="trust-box"><p style="color: #2e7d32; font-size: 1.1em; font-weight: bold; margin: 0;">📢 فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي بالمغرب.</p></div>', unsafe_allow_html=True)
     try:
         st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز - الأستاذ محمد حسون", use_column_width=True)
     except:
         st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
-    
-    st.markdown("---")
-    st.write("هدفنا هو تيسير الوصول للوثائق التربوية لضمان جودة التعليم في مرحلة ما قبل التمدرس.")
 
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
-    st.info("اختر النسخة المطلوبة للتحميل:")
-    
     col1, col2, col3 = st.columns(3)
     with col1:
         try:
-            with open("document1.pdf", "rb") as f:
-                st.download_button("📥 المذكرة (V1)", f, "daily_note_v1.pdf")
+            with open("document1.pdf", "rb") as f: st.download_button("📥 المذكرة (V1)", f, "daily_note_v1.pdf")
         except: st.error("نسخة V1 غير متوفرة")
     with col2:
         try:
-            with open("cahier journal.arabe.pdf", "rb") as f:
-                st.download_button("📥 المذكرة (بالعربية)", f, "daily_note_ar.pdf")
+            with open("cahier journal.arabe.pdf", "rb") as f: st.download_button("📥 المذكرة (بالعربية)", f, "daily_note_ar.pdf")
         except: st.error("النسخة العربية غير متوفرة")
     with col3:
         try:
-            with open("cahier journal.pdf", "rb") as f:
-                st.download_button("📥 Cahier Journal (FR)", f, "cahier_journal_fr.pdf")
+            with open("cahier journal.pdf", "rb") as f: st.download_button("📥 Cahier Journal (FR)", f, "cahier_journal_fr.pdf")
         except: st.error("النسخة الفرنسية غير متوفرة")
 
 elif choice == "استعمالات الزمن (Emploi du temps)":
     st.subheader("🕒 قسم استعمالات الزمن")
-    st.write("نضع بين أيديكم نماذج متنوعة لاستعمالات الزمن حسب المستويات:")
-    
-    # إضافة ملف أسبوع الاستئناس في الأعلى لأنه مهم جداً حالياً
     st.success("✨ ملف جديد: أسبوع الاستئناس")
     try:
-        with open("takayof.pdf", "rb") as f:
-            st.download_button("📥 تحميل برنامج أسبوع الاستئناس (Takayof)", f, "semaine_adaptation.pdf")
-    except: st.warning("يرجى رفع ملف takayof.pdf على GitHub")
+        with open("takayof.pdf", "rb") as f: st.download_button("📥 تحميل برنامج أسبوع الاستئناس", f, "takayof_adaptation.pdf")
+    except: st.warning("يرجى رفع ملف takayof.pdf")
     
     st.markdown("---")
-    
-    # تقسيم الفروع إلى 3 أعمدة
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
+    c1, c2, c3 = st.columns(3)
+    with c1:
         st.markdown("### 👥 القسم المشترك")
         try:
-            with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as f:
-                st.download_button("📥 تحميل (Multi-niveaux)", f, "emploi_multi.pdf")
+            with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as f: st.download_button("📥 تحميل (Multi)", f, "emploi_multi.pdf")
         except: st.error("الملف غير متوفر")
+    with c2: st.markdown("### 👶 التمهيدي الأول"); st.info("قريباً")
+    with c3: st.markdown("### 👦 التمهيدي الثاني"); st.info("قريباً")
 
-    with col2:
-        st.markdown("### 👶 التمهيدي الأول")
-        try:
-            with open("emploi_temps_ps.pdf", "rb") as f:
-                st.download_button("📥 تحميل (Moyenne Section)", f, "emploi_PS.pdf")
-        except: st.info("سيتم إضافة الملف قريباً")
+elif choice == "المعينات الديداكتيكية (صور)":
+    st.subheader("🖼️ قسم المعينات الديداكتيكية")
+    st.write("صور ووسائل بصرية جاهزة للاستعمال في أنشطة القسم:")
+    
+    tab1, tab2, tab3 = st.tabs(["🚦 التربية الطرقية", "🕌 الأعياد الدينية", "🇲🇦 الأعياد الوطنية"])
+    
+    with tab1:
+        st.info("نماذج وصور خاصة بالسلامة الطرقية للأطفال")
+        # هنا يمكنكِ إضافة الصور لاحقاً باستخدام st.image
+        st.write("سيتم رفع الصور قريباً...")
 
-    with col3:
-        st.markdown("### 👦 التمهيدي الثاني")
-        try:
-            with open("emploi_temps_gs.pdf", "rb") as f:
-                st.download_button("📥 تحميل (Grande Section)", f, "emploi_GS.pdf")
-        except: st.info("سيتم إضافة الملف قريباً")
+    with tab2:
+        st.info("صور ومواضيع خاصة بالأعياد الدينية (عيد الفطر، عيد الأضحى...)")
+        st.write("سيتم رفع الصور قريباً...")
+
+    with tab3:
+        st.info("ملصقات وصور خاصة بالمناسبات الوطنية المغربية")
+        st.write("سيتم رفع الصور قريباً...")
 
 elif choice == "مذكرة الأنشطة الموازية":
     st.subheader("🎨 مذكرة الأنشطة الموازية")
     try:
-        with open("cahier journal_activites_paralleles.pdf", "rb") as f:
-            st.download_button("📥 تحميل مذكرة الأنشطة", f, "cahier_journal_paralleles.pdf")
-    except: st.warning("يرجى رفع ملف المذكرة الموازية")
+        with open("cahier journal_activites_paralleles.pdf", "rb") as f: st.download_button("📥 تحميل المذكرة", f, "paralleles.pdf")
+    except: st.warning("الملف غير متوفر")
 
 elif choice == "الجذاذات التربوية":
     st.subheader("📝 قسم الجذاذات التربوية")
     try:
-        with open("fiche_pedagogique.pdf", "rb") as f:
-            st.download_button("📥 تحميل جذاذة النشاط", f, "fiche_pedagogique.pdf")
-    except: st.warning("يرجى رفع ملف fiche_pedagogique.pdf")
+        with open("fiche_pedagogique.pdf", "rb") as f: st.download_button("📥 تحميل الجذاذة", f, "fiche.pdf")
+    except: st.warning("الملف غير متوفر")
 
 elif choice == "تقييم كفايات الأطفال":
     st.subheader("📊 تقييم كفايات الأطفال")
     try:
-        file_path = "Calendrier de mise en oeuvre de l'évaluation des compétences des enfants-Année scolaire 2025-2026.pdf"
-        with open(file_path, "rb") as f:
-            st.download_button("📥 تحميل جدولة التقييمات", f, "Calendrier_Evaluation.pdf")
-    except: st.warning("يرجى رفع ملف التقييمات")
+        with open("Calendrier de mise en oeuvre de l'évaluation des compétences des enfants-Année scolaire 2025-2026.pdf", "rb") as f:
+            st.download_button("📥 تحميل الجدولة", f, "Calendrier.pdf")
+    except: st.warning("الملف غير متوفر")
 
 elif choice == "التوزيعات السنوية":
     st.subheader("🗓️ قسم التوزيعات السنوية")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("### 📜 التوزيع السنوي العام")
+        st.markdown("### 📜 التوزيع السنوي")
         try:
-            with open("distribution.pdf", "rb") as f:
-                st.download_button("📥 تحميل التوزيع العام", f, "annual_plan.pdf")
-        except: st.error("ملف التوزيع العام غير متوفر")
+            with open("distribution.pdf", "rb") as f: st.download_button("📥 تحميل التوزيع العام", f, "plan.pdf")
+        except: st.error("غير متوفر")
     with col2:
         st.markdown("### 📂 التوزيع الموضوعاتي")
         try:
-            with open("distribution1.pdf", "rb") as f:
-                st.download_button("📥 تحميل توزيع المشاريع", f, "distribution_thematique.pdf")
-        except: st.error("ملف التوزيع الموضوعاتي غير متوفر")
+            with open("distribution1.pdf", "rb") as f: st.download_button("📥 تحميل توزيع المشاريع", f, "projects.pdf")
+        except: st.error("غير متوفر")
 
 elif choice == "تواصل معنا":
     st.subheader("📧 يسعدنا التواصل معكم")
-    st.write("نرحب باقتراحاتكم لتطوير المنصة أو لطلب استشارات تربوية.")
-    
     contact_form = f"""
     <form action="https://formsubmit.co/hassoun.mohamed993@gmail.com" method="POST">
          <input type="text" name="name" placeholder="اسمك الكامل" required style="width:100%; margin-bottom:10px; border-radius:5px; border:1px solid #ccc; padding:10px;">
