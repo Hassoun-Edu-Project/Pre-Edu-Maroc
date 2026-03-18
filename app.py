@@ -120,17 +120,32 @@ elif choice == "المعينات الديداكتيكية (صور)":
     
     with tab1:
         st.info("نماذج وصور خاصة بالسلامة الطرقية للأطفال")
-        # هنا يمكنكِ إضافة الصور لاحقاً باستخدام st.image
         st.write("سيتم رفع الصور قريباً...")
 
     with tab2:
-        st.info("صور ومواضيع خاصة بالأعياد الدينية (عيد الفطر، عيد الأضحى...)")
-        st.write("سيتم رفع الصور قريباً...")
+        st.success("🌙 ركن شهر رمضان المبارك")
+        # إنشاء معرض صور بنظام الأعمدة
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            try:
+                # صورة 1 (يجب أن يكون الملف موجوداً في GitHub بنفس الاسم)
+                st.image("ramadan_1.jpg", caption="زينة رمضان", use_column_width=True)
+            except: st.warning("صورة 1 قيد الرفع")
+            
+        with col2:
+            try:
+                st.image("ramadan_2.jpg", caption="فانوس رمضان", use_column_width=True)
+            except: st.warning("صورة 2 قيد الرفع")
+            
+        with col3:
+            try:
+                st.image("ramadan_3.jpg", caption="إمساكية رمضان للأطفال", use_column_width=True)
+            except: st.warning("صورة 3 قيد الرفع")
 
     with tab3:
         st.info("ملصقات وصور خاصة بالمناسبات الوطنية المغربية")
         st.write("سيتم رفع الصور قريباً...")
-
 elif choice == "مذكرة الأنشطة الموازية":
     st.subheader("🎨 مذكرة الأنشطة الموازية")
     try:
