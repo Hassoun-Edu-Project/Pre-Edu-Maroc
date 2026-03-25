@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 # 1. إعدادات الصفحة والوصف عند المشاركة
 st.set_page_config(
@@ -11,7 +12,25 @@ st.set_page_config(
     }
 )
 
-# 2. لمسات احترافية بالألوان (CSS)
+# 2. تعريف الدوال الأساسية (يجب أن تكون في الأعلى)
+def display_educational_img(img_name, caption):
+    """دالة ذكية لعرض وتحميل الصور"""
+    if os.path.exists(img_name):
+        st.image(img_name, caption=caption, use_column_width=True)
+        with open(img_name, "rb") as f:
+            st.download_button(f"تحميل {caption}", f, img_name, key=img_name)
+    else:
+        # بحث مرن في حال وجود اختلاف في الحروف الكبيرة أو الصغيرة
+        all_files = os.listdir('.')
+        found = [f for f in all_files if img_name.lower() in f.lower()]
+        if found:
+            st.image(found[0], caption=caption, use_column_width=True)
+            with open(found[0], "rb") as f:
+                st.download_button(f"تحميل {caption}", f, found[0], key=found[0])
+        else:
+            st.warning(f"⚠️ الصورة {img_name} غير متوفرة")
+
+# 3. لمسات احترافية بالألوان (CSS)
 st.markdown("""
     <style>
     .main { background-color: #fdfefe; }
@@ -50,7 +69,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. القائمة الجانبية (Sidebar)
+# 4. القائمة الجانبية (Sidebar)
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3976/3976625.png", width=120)
     st.title("Hassoun-Edu")
@@ -68,7 +87,7 @@ with st.sidebar:
         "تواصل معنا"
     ])
 
-# 4. محتوى الأقسام
+# 5. محتوى الأقسام
 st.title("🌟 منصة الوثائق التربوية")
 
 if choice == "الرئيسية":
@@ -114,45 +133,15 @@ elif choice == "استعمالات الزمن (Emploi du temps)":
 
 elif choice == "المعينات الديداكتيكية (صور)":
     st.subheader("🖼️ قسم المعينات الديداكتيكية")
-    st.write("صور ووسائل بصرية جاهزة للاستعمال في أنشطة القسم:")
-    
     tab1, tab2, tab3 = st.tabs(["🚦 التربية الطرقية", "🕌 الأعياد الدينية", "🇲🇦 الأعياد الوطنية"])
     
-    with tab1:
-        st.info("نماذج وصور خاصة بالسلامة الطرقية للأطفال")
-        st.write("سيتم رفع الصور قريباً...")
-
     with tab2:
         st.success("🌙 معرض صور شهر رمضان المبارك")
-        
-        # دالة ذكية لعرض الصورة والتحقق من وجودها
-        def display_educational_img(img_name, caption):
-            if os.path.exists(img_name):
-                st.image(img_name, caption=caption, use_column_width=True)
-                with open(img_name, "rb") as f:
-                    st.download_button(f"تحميل {caption}", f, img_name, key=img_name)
-            else:
-                # محاولة البحث عن الملف إذا كان هناك اختلاف بسيط في الاسم
-                all_files = os.listdir('.')
-                found = [f for f in all_files if img_name.lower() in f.lower()]
-                if found:
-                    st.image(found[0], caption=caption, use_column_width=True)
-                else:
-                    st.warning(f"⚠️ الصورة {img_name} غير متوفرة في المجلد")
-
-        # عرض الصور في شبكة (Grid)
         col1, col2, col3 = st.columns(3)
         with col1: display_educational_img("ramadan_1.jpg", "زينة رمضان")
-        with col2: display_educational_img("ramadan_2.jpg", "فانوس رمضان")
-        with col3: display_educational_img("ramadan_3.jpg", "بطاقة تهنئة")
-        
-        col4, col5 = st.columns(2)
-        with col4: display_educational_img("ramadan_4.jpg", "رمضان كريم")
-        with col5: display_educational_img("ramadan_5.jpg", "نشاط للأطفال")
+        with col2: display_educational_img("ramadan_2.jpg", "فانوس رمضان للأطفال")
+        with col3: display_educational_img("ramadan_3.jpg", "بطاقة تهنئة رمضان")
 
-    with tab3:
-        st.info("ملصقات وصور خاصة بالمناسبات الوطنية المغربية")
-        st.write("سيتم رفع الصور قريباً...")
 elif choice == "مذكرة الأنشطة الموازية":
     st.subheader("🎨 مذكرة الأنشطة الموازية")
     try:
@@ -167,21 +156,23 @@ elif choice == "الجذاذات التربوية":
 
 elif choice == "تقييم كفايات الأطفال":
     st.subheader("📊 تقييم كفايات الأطفال")
+    # محاولة البحث عن الملف الطويل تلقائياً لتفادي الخطأ
     try:
-        with open("Calendrier de mise en oeuvre de l'évaluation des compétences des enfants-Année scolaire 2025-2026.pdf", "rb") as f:
-            st.download_button("📥 تحميل الجدولة", f, "Calendrier.pdf")
-    except: st.warning("الملف غير متوفر")
+        files = os.listdir('.')
+        target = next((f for f in files if "Calendrier" in f), None)
+        if target:
+            with open(target, "rb") as f: st.download_button("📥 تحميل الجدولة", f, "Calendrier.pdf")
+        else: st.warning("الملف غير متوفر")
+    except: st.error("حدث خطأ في الوصول للملف")
 
 elif choice == "التوزيعات السنوية":
     st.subheader("🗓️ قسم التوزيعات السنوية")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("### 📜 التوزيع السنوي")
         try:
             with open("distribution.pdf", "rb") as f: st.download_button("📥 تحميل التوزيع العام", f, "plan.pdf")
         except: st.error("غير متوفر")
     with col2:
-        st.markdown("### 📂 التوزيع الموضوعاتي")
         try:
             with open("distribution1.pdf", "rb") as f: st.download_button("📥 تحميل توزيع المشاريع", f, "projects.pdf")
         except: st.error("غير متوفر")
@@ -196,5 +187,4 @@ elif choice == "تواصل معنا":
          <button type="submit" style="background-color:#2e7d32; color:white; border:none; padding:12px 25px; border-radius:25px; cursor:pointer; width:100%; font-weight:bold;">إرسال</button>
     </form>
     """
-    st.markdown(contact_form, unsafe_allow_html=True)
     st.markdown(contact_form, unsafe_allow_html=True)
