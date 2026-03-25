@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # 2. إعدادات الأمان وكلمة المرور
-ADMIN_PASSWORD = st.secrets["youghrtamassinanas1993"]
+ADMIN_PASSWORD = "Hassoun_Pro_2026" 
 
 if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
