@@ -1,3 +1,47 @@
+# --- إعدادات الأمان (Sécurité) ---
+# يمكنك تغيير كلمة السر هنا
+ADMIN_PASSWORD = "Hassoun_Pro_2026" 
+
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+
+# دالة لتسجيل الخروج
+def logout():
+    st.session_state['logged_in'] = False
+    st.rerun()
+
+# --- إضافة خيار "لوحة التحكم" في القائمة الجانبية ---
+with st.sidebar:
+    st.markdown("---")
+    if not st.session_state['logged_in']:
+        st.header("🔐 دخول المشرف")
+        pwd = st.text_input("كلمة المرور", type="password")
+        if st.button("دخول"):
+            if pwd == ADMIN_PASSWORD:
+                st.session_state['logged_in'] = True
+                st.success("مرحباً أستاذ محمد!")
+                st.rerun()
+            else:
+                st.error("كلمة المرور خاطئة")
+    else:
+        st.success("✅ أنت في وضع المشرف")
+        if st.button("تسجيل الخروج"):
+            logout()
+
+# --- محتوى لوحة التحكم (ظهر فقط للمشرف) ---
+if st.session_state['logged_in']:
+    st.divider()
+    st.header("🛠️ لوحة تحكم الإدارة")
+    st.subheader("رفع وثيقة جديدة (Upload)")
+    
+    uploaded_file = st.file_uploader("اختر ملف الـ PDF لرفعه", type=['pdf', 'jpg', 'png'])
+    
+    if uploaded_file is not None:
+        # حفظ الملف في السيرفر بنفس اسمه الأصلي
+        with open(uploaded_file.name, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        st.success(f"✅ تم رفع الملف '{uploaded_file.name}' بنجاح! سيظهر الآن للمستخدمين.")
+    st.divider()
 import streamlit as st
 import os
 
