@@ -1,12 +1,27 @@
 import streamlit as st
 import os
 
-# 1. إعدادات الصفحة الأساسية
-st.set_page_config(
-    page_title="Hassoun-Edu | فضاء الوثائق التربوية", 
-    page_icon="🎓", 
-    layout="wide",
-    initial_sidebar_state="expanded"
+if choice == "الرئيسية":
+    st.markdown("<h1>🎓 فضاء المربي المغربي</h1>", unsafe_allow_html=True)
+    
+    # عرض صورة ترحيبية بشكل دائري أو مؤطر
+    col_img, col_txt = st.columns([1, 2])
+    with col_img:
+        st.image("https://cdn-icons-png.flaticon.com/512/3429/3429433.png", width=200)
+    with col_txt:
+        st.subheader("مرحباً بك في Hassoun-Edu")
+        st.info("منصتكم الرقمية لتحميل وتدبير الوثائق التربوية الخاصة بالتعليم الأولي.")
+
+    st.divider()
+    
+    # شبكة من البطاقات السريعة
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown('<div class="feature-card"><h3>📅</h3><b>المذكرات</b><p>تحميل المذكرة اليومية بصيغ متعددة</p></div>', unsafe_allow_html=True)
+    with c2:
+        st.markdown('<div class="feature-card"><h3>🕒</h3><b>الزمن</b><p>استعمالات الزمن لمختلف المستويات</p></div>', unsafe_allow_html=True)
+    with c3:
+        st.markdown('<div class="feature-card"><h3>📝</h3><b>الجذاذات</b><p>نماذج جذاذات تربوية جاهزة</p></div>', unsafe_allow_html=True)
 )
 
 # 2. إعدادات الأمان وكلمة المرور
