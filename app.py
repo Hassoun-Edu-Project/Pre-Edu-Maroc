@@ -38,14 +38,14 @@ def display_educational_img(img_name, caption):
         else:
             st.warning(f"⚠️ {caption} غير متوفرة")
 
-# 4. التنسيق الجمالي المطور (CSS)
+# 4. التنسيق الجمالي المطور (CSS) - النسخة المصححة
 st.markdown("""
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
+    /* تأكدي أن كل شيء هنا داخل علامات الـ style */
     * { font-family: 'Cairo', sans-serif; }
     .main { background-color: #f8f9fa; }
     
-    /* تصميم البطاقات التفاعلية */
     .feature-card {
         background-color: white;
         padding: 25px;
@@ -62,17 +62,17 @@ st.markdown("""
         box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
     
-    /* العناوين والأزرار */
     h1 { color: #1e3d59; text-align: center; background: #ffffff; border-radius: 15px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    
     .stButton>button { 
         width: 100%; border-radius: 25px; background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
         color: white; height: 3.5em; font-weight: bold; border: none; transition: 0.3s;
     }
     .stButton>button:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(46,125,50,0.3); }
+    
     .trust-box { background-color: #e8f5e9; padding: 15px; border-radius: 10px; border-right: 5px solid #2e7d32; margin-bottom: 20px; }
     </style>
     """, unsafe_allow_html=True)
-
 # 5. القائمة الجانبية ونظام الدخول
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3976/3976625.png", width=100)
