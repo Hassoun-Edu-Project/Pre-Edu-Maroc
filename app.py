@@ -180,32 +180,39 @@ elif choice == "مذكرة الأنشطة الموازية":
     except: st.warning("الملف غير متوفر")
 
 elif choice == "الجذاذات التربوية":
-    st.subheader("📝 قسم الجذاذات التربوية")
-    try:
-        with open("fiche_pedagogique.pdf", "rb") as f: st.download_button("📥 تحميل الجذاذة", f, "fiche.pdf")
-    except: st.warning("الملف غير متوفر")
+    st.markdown("<h1>📝 بنك الجذاذات التربوية الموسمية</h1>", unsafe_allow_html=True)
+    
+    # تبويبات أنيقة بألوان الربيع والأولمبياد
+    tab_spring, tab_olympics, tab_festival = st.tabs([
+        "🌿 جذاذات فصل الربيع", 
+        "🏆 أولمبياد الطفل", 
+        "🎉 مهرجان الربيع"
+    ])
+    
+    with tab_spring:
+        st.markdown('<div class="trust-box"><b>الهدف:</b> تعرف الطفل على مظاهر فصل الربيع، تحول الطبيعة، وحماية البيئة.</div>', unsafe_allow_html=True)
+        c1, c2 = st.columns(2)
+        with c1:
+            display_educational_img("spring_lesson.jpg", "لوحة استكشاف الربيع")
+        with c2:
+            try:
+                with open("fiche_printemps.pdf", "rb") as f:
+                    st.download_button("📥 تحميل جذاذة فصل الربيع", f, "Fiche_Printemps.pdf")
+            except: st.warning("الملف 'fiche_printemps.pdf' غير متوفر")
 
-elif choice == "تقييم كفايات الأطفال":
-    st.subheader("📊 تقييم كفايات الأطفال")
-    try:
-        files = os.listdir('.')
-        target = next((f for f in files if "Calendrier" in f), None)
-        if target:
-            with open(target, "rb") as f: st.download_button("📥 تحميل الجدولة", f, "Calendrier.pdf")
-        else: st.warning("الملف غير متوفر")
-    except: st.error("حدث خطأ في الوصول للملف")
+    with tab_olympics:
+        st.success("🏅 أنشطة حركية ورياضية لتعزيز الروح الجماعية والمهارات البدنية.")
+        try:
+            with open("olympiades_kids.pdf", "rb") as f:
+                st.download_button("📥 تحميل جذاذة الأولمبياد", f, "Olympiades_Kids.pdf")
+        except: st.warning("الملف 'olympiades_kids.pdf' غير متوفر")
 
-elif choice == "التوزيعات السنوية":
-    st.subheader("🗓️ قسم التوزيعات السنوية")
-    col1, col2 = st.columns(2)
-    with col1:
+    with tab_festival:
+        st.info("🎭 برنامج مقترح للعروض المسرحية، الأناشيد، والورشات الفنية للمهرجان.")
         try:
-            with open("distribution.pdf", "rb") as f: st.download_button("📥 تحميل التوزيع العام", f, "plan.pdf")
-        except: st.error("غير متوفر")
-    with col2:
-        try:
-            with open("distribution1.pdf", "rb") as f: st.download_button("📥 تحميل توزيع المشاريع", f, "projects.pdf")
-        except: st.error("غير متوفر")
+            with open("festival_printemps.pdf", "rb") as f:
+                st.download_button("📥 تحميل برنامج مهرجان الربيع", f, "Spring_Festival.pdf")
+        except: st.warning("الملف 'festival_printemps.pdf' غير متوفر")
 
 elif choice == "تواصل معنا":
     st.subheader("📧 يسعدنا التواصل معكم")
