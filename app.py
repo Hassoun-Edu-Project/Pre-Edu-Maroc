@@ -33,56 +33,18 @@ def display_educational_img(img_name, caption):
             st.image(found[0], caption=caption, use_column_width=True)
         else:
             st.warning(f"⚠️ {caption} غير متوفرة")
-# --- تحسينات بصرية متقدمة (Advanced UI) ---
+
+# 4. التنسيق الجمالي (CSS)
 st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-    /* تغيير الخط الشامل للموقع */
-    * { font-family: 'Cairo', sans-serif; }
-
-    /* تحسين خلفية الموقع */
-    .stApp {
-        background: linear-gradient(to bottom, #f0f4f8, #ffffff);
+    .main { background-color: #fdfefe; }
+    .stButton>button { 
+        width: 100%; border-radius: 25px; background-color: #2e7d32; 
+        color: white; height: 3.5em; font-weight: bold; border: none;
     }
-
-    /* تصميم البطاقات التعريفية */
-    .feature-card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-top: 5px solid #2e7d32;
-        text-align: center;
-        transition: transform 0.3s ease;
-        margin-bottom: 20px;
-    }
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 15px rgba(0,0,0,0.2);
-    }
-
-    /* تحسين شكل العناوين */
-    h1 { 
-        color: #1e3d59; 
-        background: #ffffff; 
-        padding: 25px; 
-        border-radius: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        border-bottom: 4px solid #4caf50;
-    }
-
-    /* تحسين الأزرار */
-    .stButton>button {
-        background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
-        border: none;
-        color: white;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
-    }
-    .stButton>button:hover {
-        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
-        transform: scale(1.02);
-    }
+    .stButton>button:hover { background-color: #1b5e20; }
+    h1 { color: #1e3d59; text-align: center; background: #e3f2fd; border-radius: 15px; padding: 20px; }
+    .trust-box { background-color: #e8f5e9; padding: 15px; border-radius: 10px; border-right: 5px solid #2e7d32; }
     </style>
     """, unsafe_allow_html=True)
 
