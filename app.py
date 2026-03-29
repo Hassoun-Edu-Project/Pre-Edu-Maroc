@@ -168,10 +168,12 @@ elif choice == "المعينات الديداكتيكية (صور)":
     tab1, tab2, tab3 = st.tabs(["🚦 التربية الطرقية", "🕌 الأعياد الدينية", "🇲🇦 الأعياد الوطنية"])
     with tab2:
         st.success("🌙 معرض صور شهر رمضان المبارك")
-        c1, c2, c3 = st.columns(3)
-        with c1: display_educational_img("ramadan_1.jpg", "زينة رمضان")
-        with col2: display_educational_img("ramadan_2.jpg", "فانوس رمضان") # تصحيح صغير هنا col2 -> c2
-        with col3: display_educational_img("ramadan_3.jpg", "بطاقة تهنئة") # تصحيح صغير هنا col3 -> c3
+with c1: 
+            display_educational_img("ramadan_1.jpg", "زينة رمضان")
+        with c2: 
+            display_educational_img("ramadan_2.jpg", "فانوس رمضان")
+        with c3: 
+            display_educational_img("ramadan_3.jpg", "بطاقة تهنئة")
 
 elif choice == "مذكرة الأنشطة الموازية":
     st.subheader("🎨 مذكرة الأنشطة الموازية")
