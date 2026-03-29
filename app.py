@@ -166,8 +166,12 @@ elif choice == "استعمالات الزمن (Emploi du temps)":
 elif choice == "المعينات الديداكتيكية (صور)":
     st.subheader("🖼️ قسم المعينات الديداكتيكية")
     tab1, tab2, tab3 = st.tabs(["🚦 التربية الطرقية", "🕌 الأعياد الدينية", "🇲🇦 الأعياد الوطنية"])
+    
     with tab2:
         st.success("🌙 معرض صور شهر رمضان المبارك")
+        # تأكدي من تعريف الأعمدة هنا مباشرة قبل استخدامها
+        c1, c2, c3 = st.columns(3) 
+        
         with c1: 
             display_educational_img("ramadan_1.jpg", "زينة رمضان")
         with c2: 
