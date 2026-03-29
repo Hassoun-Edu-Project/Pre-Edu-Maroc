@@ -168,7 +168,7 @@ elif choice == "المعينات الديداكتيكية (صور)":
     tab1, tab2, tab3 = st.tabs(["🚦 التربية الطرقية", "🕌 الأعياد الدينية", "🇲🇦 الأعياد الوطنية"])
     with tab2:
         st.success("🌙 معرض صور شهر رمضان المبارك")
-with c1: 
+        with c1: 
             display_educational_img("ramadan_1.jpg", "زينة رمضان")
         with c2: 
             display_educational_img("ramadan_2.jpg", "فانوس رمضان")
