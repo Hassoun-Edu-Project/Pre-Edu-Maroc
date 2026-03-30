@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import requests
+import base64
 
 # 1. إعدادات الصفحة الأساسية
 st.set_page_config(
@@ -9,8 +11,32 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# --- دالة الرفع الاحترافية إلى GitHub ---
+def upload_to_github(file_bytes, file_name):
+    try:
+        token = st.secrets["github_token"]
+        repo = st.secrets["github_repo"]
+        # سيتم رفع الملف إلى المسار الرئيسي في المستودع
+        url = f"https://api.github.com/repos/{repo}/contents/{file_name}"
+        
+        headers = {
+            "Authorization": f"token {token}",
+            "Content-Type": "application/json"
+        }
+        
+        base64_content = base64.b64encode(file_bytes).decode("utf-8")
+        
+        data = {
+            "message": f"إضافة وثيقة تربوية: {file_name}",
+            "content": base64_content
+        }
+        
+        response = requests.put(url, headers=headers, json=data)
+        return response.status_code
+    except Exception as e:
+        return str(e)
+
 # 2. إعدادات الأمان وكلمة المرور
-# تأكد من وجود admin_password في Secrets على Streamlit Cloud
 try:
     ADMIN_PASSWORD = st.secrets["admin_password"]
 except:
@@ -31,51 +57,31 @@ def display_educational_img(img_name, caption):
         with open(img_name, "rb") as f:
             st.download_button(f"تحميل {caption}", f, img_name, key=f"btn_{img_name}")
     else:
-        all_files = os.listdir('.')
-        found = [f for f in all_files if img_name.lower() in f.lower()]
-        if found:
-            st.image(found[0], caption=caption, use_column_width=True)
-        else:
-            st.warning(f"⚠️ {caption} غير متوفرة")
+        st.warning(f"⚠️ {caption} سيتم توفيرها قريباً")
 
-# 4. التنسيق الجمالي المطور (CSS) - النسخة النهائية المضمونة
+# 4. التنسيق الجمالي المطور (CSS)
 css_code = """
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
     * { font-family: 'Cairo', sans-serif !important; }
     .stApp { background-color: #f8f9fa; }
-    
-    /* تصميم البطاقات التفاعلية */
     .feature-card {
-        background-color: white;
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        border-top: 5px solid #2e7d32;
-        text-align: center;
-        transition: all 0.3s ease;
-        margin-bottom: 20px;
+        background-color: white; padding: 25px; border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #2e7d32;
+        text-align: center; transition: all 0.3s ease; margin-bottom: 20px;
     }
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    
-    /* العناوين والأزرار */
-    h1 { color: #1e3d59; text-align: center; background: #ffffff; border-radius: 15px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    
+    .feature-card:hover { transform: translateY(-10px); }
+    h1 { color: #1e3d59; text-align: center; background: #ffffff; border-radius: 15px; padding: 20px; }
     .stButton>button { 
         width: 100% !important; border-radius: 25px !important; 
         background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%) !important;
-        color: white !important; height: 3.5em !important; font-weight: bold !important; 
-        border: none !important; transition: 0.3s !important;
+        color: white !important; font-weight: bold !important; border: none !important;
     }
-    .stButton>button:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(46,125,50,0.3); }
-    
-    .trust-box { background-color: #e8f5e9; padding: 15px; border-radius: 10px; border-right: 5px solid #2e7d32; margin-bottom: 20px; }
+    .trust-box { background-color: #e8f5e9; padding: 15px; border-radius: 10px; border-right: 5px solid #2e7d32; }
 </style>
 """
 st.markdown(css_code, unsafe_allow_html=True)
+
 # 5. القائمة الجانبية ونظام الدخول
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3976/3976625.png", width=100)
@@ -100,17 +106,21 @@ with st.sidebar:
                 st.error("كلمة المرور غير صحيحة")
     else:
         st.success("✅ وضع المشرف نشط")
+        # لوحة الإدارة المدمجة للرفع الدائم
+        with st.expander("🛠️ رفع ملفات دائم (GitHub)"):
+            up_file = st.file_uploader("اختر ملفاً", type=['pdf', 'jpg', 'png', 'jpeg'])
+            if up_file:
+                if st.button("🚀 تأكيد الرفع إلى GitHub"):
+                    with st.spinner("جاري المزامنة..."):
+                        status = upload_to_github(up_file.getvalue(), up_file.name)
+                        if status in [200, 201]:
+                            st.success(f"✅ تم رفع {up_file.name} بنجاح!")
+                            st.balloons()
+                        else:
+                            st.error(f"❌ خطأ في الرفع: {status}")
+        
         if st.button("تسجيل الخروج"):
             logout()
-
-# 6. لوحة التحكم
-if st.session_state['logged_in']:
-    with st.expander("🛠️ لوحة الإدارة - رفع الملفات"):
-        uploaded_file = st.file_uploader("اختر ملفاً (PDF أو صور)", type=['pdf', 'jpg', 'png', 'jpeg'])
-        if uploaded_file is not None:
-            with open(uploaded_file.name, "wb") as f:
-                f.write(uploaded_file.getbuffer())
-            st.success(f"تم رفع {uploaded_file.name} بنجاح!")
 
 # 7. محتوى الأقسام
 st.markdown("<h1>🌟 منصة Hassoun-Edu للوثائق التربوية</h1>", unsafe_allow_html=True)
@@ -118,7 +128,6 @@ st.markdown("<h1>🌟 منصة Hassoun-Edu للوثائق التربوية</h1>"
 if choice == "الرئيسية":
     st.markdown('<div class="trust-box"><p style="margin:0; font-weight:bold; color:#2e7d32; text-align:center;">📢 فضاء تربوي مخصص لتقاسم الوثائق والدلائل الخاصة بمربي التعليم الأولي بالمغرب.</p></div>', unsafe_allow_html=True)
     
-    # شبكة البطاقات التفاعلية
     col_a, col_b, col_c = st.columns(3)
     with col_a:
         st.markdown('<div class="feature-card"><h2>📅</h2><h4>المذكرات</h4><p>المذكرة اليومية والأنشطة الموازية جاهزة للتحميل</p></div>', unsafe_allow_html=True)
@@ -128,101 +137,38 @@ if choice == "الرئيسية":
         st.markdown('<div class="feature-card"><h2>📊</h2><h4>التقييم</h4><p>أدوات وشبكات تقييم كفايات طفل التعليم الأولي</p></div>', unsafe_allow_html=True)
 
     st.divider()
-    try:
-        st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز - الأستاذ محمد حسون", use_column_width=True)
-    except:
-        st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
+    st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
 
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
     col1, col2, col3 = st.columns(3)
-    with col1:
-        try:
-            with open("document1.pdf", "rb") as f: st.download_button("📥 المذكرة (V1)", f, "daily_note_v1.pdf")
-        except: st.error("نسخة V1 غير متوفرة")
-    with col2:
-        try:
-            with open("cahier journal.arabe.pdf", "rb") as f: st.download_button("📥 المذكرة (بالعربية)", f, "daily_note_ar.pdf")
-        except: st.error("النسخة العربية غير متوفرة")
-    with col3:
-        try:
-            with open("cahier journal.pdf", "rb") as f: st.download_button("📥 Cahier Journal (FR)", f, "cahier_journal_fr.pdf")
-        except: st.error("النسخة الفرنسية غير متوفرة")
-
-elif choice == "استعمالات الزمن (Emploi du temps)":
-    st.subheader("🕒 قسم استعمالات الزمن")
-    try:
-        with open("takayof.pdf", "rb") as f: st.download_button("📥 تحميل برنامج أسبوع الاستئناس", f, "takayof_adaptation.pdf")
-    except: st.warning("ملف takayof.pdf غير موجود")
-    
-    st.divider()
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown("### 👥 القسم المشترك")
-        try:
-            with open("emploi_temps_multi.la rentrée scolaire.pdf", "rb") as f: st.download_button("📥 تحميل (Multi)", f, "emploi_multi.pdf")
-        except: st.error("الملف غير متوفر")
+    # ملاحظة: يمكنكِ الآن رفع هذه الملفات عبر لوحة الإدارة وستعمل الأزرار تلقائياً إذا تطابقت الأسماء
+    for i, (label, fname) in enumerate([("V1", "document1.pdf"), ("العربية", "cahier journal.arabe.pdf"), ("Français", "cahier journal.pdf")]):
+        with [col1, col2, col3][i]:
+            if os.path.exists(fname):
+                with open(fname, "rb") as f: st.download_button(f"📥 تحميل {label}", f, fname)
+            else: st.info(f"📍 نسخة {label} قيد التجهيز")
 
 elif choice == "المعينات الديداكتيكية (صور)":
     st.subheader("🖼️ قسم المعينات الديداكتيكية")
     tab1, tab2, tab3 = st.tabs(["🚦 التربية الطرقية", "🕌 الأعياد الدينية", "🇲🇦 الأعياد الوطنية"])
-    
     with tab2:
         st.success("🌙 معرض صور شهر رمضان المبارك")
-        # تأكدي من تعريف الأعمدة هنا مباشرة قبل استخدامها
-        c1, c2, c3 = st.columns(3) 
-        
-        with c1: 
-            display_educational_img("ramadan_1.jpg", "زينة رمضان")
-        with c2: 
-            display_educational_img("ramadan_2.jpg", "فانوس رمضان")
-        with c3: 
-            display_educational_img("ramadan_3.jpg", "بطاقة تهنئة")
-
-elif choice == "مذكرة الأنشطة الموازية":
-    st.subheader("🎨 مذكرة الأنشطة الموازية")
-    try:
-        with open("cahier journal_activites_paralleles.pdf", "rb") as f: st.download_button("📥 تحميل المذكرة", f, "paralleles.pdf")
-    except: st.warning("الملف غير متوفر")
+        c1, c2, c3 = st.columns(3)
+        with c1: display_educational_img("ramadan_1.jpg", "زينة رمضان")
+        with c2: display_educational_img("ramadan_2.jpg", "فانوس رمضان")
+        with c3: display_educational_img("ramadan_3.jpg", "بطاقة تهنئة")
 
 elif choice == "الجذاذات التربوية":
     st.markdown("<h1>📝 بنك الجذاذات التربوية الموسمية</h1>", unsafe_allow_html=True)
-    
-    # تبويبات أنيقة بألوان الربيع والأولمبياد
-    tab_spring, tab_olympics, tab_festival = st.tabs([
-        "🌿 جذاذات فصل الربيع", 
-        "🏆 أولمبياد الطفل", 
-        "🎉 مهرجان الربيع"
-    ])
-    
+    tab_spring, tab_olympics = st.tabs(["🌿 جذاذات فصل الربيع", "🏆 أولمبياد الطفل"])
     with tab_spring:
-        st.markdown('<div class="trust-box"><b>الهدف:</b> تعرف الطفل على مظاهر فصل الربيع، تحول الطبيعة، وحماية البيئة.</div>', unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            display_educational_img("spring_lesson.jpg", "لوحة استكشاف الربيع")
-        with c2:
-            try:
-                with open("fiche_printemps.pdf", "rb") as f:
-                    st.download_button("📥 تحميل جذاذة فصل الربيع", f, "Fiche_Printemps.pdf")
-            except: st.warning("الملف 'fiche_printemps.pdf' غير متوفر")
-
-    with tab_olympics:
-        st.success("🏅 أنشطة حركية ورياضية لتعزيز الروح الجماعية والمهارات البدنية.")
-        try:
-            with open("olympiades_kids.pdf", "rb") as f:
-                st.download_button("📥 تحميل جذاذة الأولمبياد", f, "Olympiades_Kids.pdf")
-        except: st.warning("الملف 'olympiades_kids.pdf' غير متوفر")
-
-    with tab_festival:
-        st.info("🎭 برنامج مقترح للعروض المسرحية، الأناشيد، والورشات الفنية للمهرجان.")
-        try:
-            with open("festival_printemps.pdf", "rb") as f:
-                st.download_button("📥 تحميل برنامج مهرجان الربيع", f, "Spring_Festival.pdf")
-        except: st.warning("الملف 'festival_printemps.pdf' غير متوفر")
+        st.markdown('<div class="trust-box"><b>الهدف:</b> تعرف الطفل على مظاهر فصل الربيع.</div>', unsafe_allow_html=True)
+        display_educational_img("spring_lesson.jpg", "لوحة استكشاف الربيع")
 
 elif choice == "تواصل معنا":
     st.subheader("📧 يسعدنا التواصل معكم")
-    contact_form = f"""
+    contact_form = """
     <form action="https://formsubmit.co/hassoun.mohamed993@gmail.com" method="POST">
          <input type="text" name="name" placeholder="اسمك الكامل" required style="width:100%; margin-bottom:10px; border-radius:5px; padding:10px; border:1px solid #ccc;">
          <input type="email" name="email" placeholder="بريدك الإلكتروني" required style="width:100%; margin-bottom:10px; border-radius:5px; padding:10px; border:1px solid #ccc;">
