@@ -38,11 +38,8 @@ if 'logged_in' not in st.session_state: st.session_state['logged_in'] = False
 # 3. دالة ذكية للتعامل مع الملفات (صور أو PDF)
 def display_resource(file_name, caption):
     if os.path.exists(file_name):
-        # إذا كان الملف صورة (png, jpg, jpeg) نعرضه
         if file_name.lower().endswith(('.png', '.jpg', '.jpeg')):
             st.image(file_name, caption=caption, use_column_width=True)
-        
-        # في كل الحالات (سواء صورة أو PDF) نوفر زر التحميل
         with open(file_name, "rb") as f:
             st.download_button(f"📥 تحميل {caption}", f, file_name, key=f"btn_{file_name}")
     else:
@@ -88,8 +85,10 @@ with st.sidebar:
 st.markdown(f"<div class='main-header'><h1>🌟 منصة Hassoun-Edu التربوية</h1></div>", unsafe_allow_html=True)
 
 if choice == "الرئيسية":
-    st.info("📢 فضاء مخصص لمربيات ومربي التعليم الأولي بالمغرب.")
-    st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg")
+    st.info("📢 فضاء مخصص لمربيات ومربي التعليم الأولي بالمغرب (FMPS).")
+    # تم تثبيت الصورة التي أعجبتكِ هنا:
+    st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
+    st.markdown("<p style='text-align:center;'>مرحباً بكِ في فضائكِ التربوي المتميز</p>", unsafe_allow_html=True)
 
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
