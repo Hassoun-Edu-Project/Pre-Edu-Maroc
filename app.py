@@ -133,4 +133,7 @@ elif choice == "المعينات الديداكتيكية (صور)":
 
 elif choice == "الجذاذات التربوية":
     st.subheader("📝 بنك الجذاذات (PDF)")
-    display_resource("fiche_printemps.pdf", "ج
+    display_resource("fiche_printemps.pdf", "جذاذة أنشطة فصل الربيع")
+
+elif choice == "تواصل معنا":
+    st.success("📧 للتواصل: hassoun.mohamed993@gmail.com")
