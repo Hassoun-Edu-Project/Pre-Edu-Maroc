@@ -35,14 +35,18 @@ def upload_to_github(file_bytes, file_name):
 ADMIN_PASSWORD = st.secrets.get("admin_password", "Hassoun_Default_2026")
 if 'logged_in' not in st.session_state: st.session_state['logged_in'] = False
 
-# 3. دالة عرض الصور الاحترافية
-def display_educational_img(img_name, caption):
-    if os.path.exists(img_name):
-        st.image(img_name, caption=caption, use_column_width=True)
-        with open(img_name, "rb") as f:
-            st.download_button(f"📥 تحميل {caption}", f, img_name, key=f"btn_{img_name}")
+# 3. دالة ذكية للتعامل مع الملفات (صور أو PDF)
+def display_resource(file_name, caption):
+    if os.path.exists(file_name):
+        # إذا كان الملف صورة (png, jpg, jpeg) نعرضه
+        if file_name.lower().endswith(('.png', '.jpg', '.jpeg')):
+            st.image(file_name, caption=caption, use_column_width=True)
+        
+        # في كل الحالات (سواء صورة أو PDF) نوفر زر التحميل
+        with open(file_name, "rb") as f:
+            st.download_button(f"📥 تحميل {caption}", f, file_name, key=f"btn_{file_name}")
     else:
-        st.info(f"📍 {caption} (باسم {img_name})")
+        st.info(f"📍 {caption} (باسم {file_name})")
 
 # 4. التنسيق الجمالي (CSS)
 st.markdown("""
@@ -69,13 +73,12 @@ with st.sidebar:
                 st.rerun()
     else:
         st.success("✅ وضع المشرف نشط")
-        with st.expander("📤 رفع الوسائل الديداكتيكية"):
-            up_files = st.file_uploader("اختر صور الربيع/الوثائق", accept_multiple_files=True)
+        with st.expander("📤 رفع الوسائل/الوثائق"):
+            up_files = st.file_uploader("اختر الملفات", accept_multiple_files=True)
             if up_files and st.button("🚀 بدء الرفع"):
                 for f in up_files:
-                    with st.status(f"رفع {f.name}...") as s:
-                        res = upload_to_github(f.getvalue(), f.name)
-                        s.update(label=f"تم رفع {f.name}" if res in [200, 201] else f"خطأ في {f.name}", state="complete" if res in [200, 201] else "error")
+                    res = upload_to_github(f.getvalue(), f.name)
+                    if res in [200, 201]: st.toast(f"تم رفع {f.name} ✅")
                 st.balloons()
         if st.button("تسجيل الخروج"):
             st.session_state['logged_in'] = False
@@ -91,44 +94,40 @@ if choice == "الرئيسية":
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
     c1, c2, c3 = st.columns(3)
-    with c1: display_educational_img("document1.pdf", "المذكرة V1")
-    with c2: display_educational_img("cahier journal.arabe.pdf", "المذكرة بالعربية")
-    with c3: display_educational_img("cahier journal.pdf", "Cahier Journal")
+    with c1: display_resource("document1.pdf", "المذكرة V1")
+    with c2: display_resource("cahier journal.arabe.pdf", "المذكرة بالعربية")
+    with c3: display_resource("cahier journal.pdf", "Cahier Journal")
 
 elif choice == "استعمالات الزمن":
     st.subheader("🕒 الجدولة الزمنية")
-    display_educational_img("takayof.pdf", "برنامج أسبوع الاستئناس")
+    display_resource("takayof.pdf", "برنامج أسبوع الاستئناس")
 
 elif choice == "المعينات الديداكتيكية (صور)":
     st.markdown("<h2 style='text-align: center; color: #2e7d32;'>🖼️ مكتبة الوسائل التعليمية - فصل الربيع</h2>", unsafe_allow_html=True)
-    
-    # تبويبات لتنظيم الصور الجديدة
     t_logos, t_houses, t_nature = st.tabs(["🏷️ الشعارات", "🏡 المنازل للتلوين", "🦋 الفراشات والأزهار"])
     
     with t_logos:
         c1, c2 = st.columns(2)
-        with c1: display_educational_img("logo_spring_ar.png", "لوغو الربيع (عربي)")
-        with c2: display_educational_img("logo_spring_fr.png", "Logo Printemps")
+        with c1: display_resource("logo_spring_ar.png", "لوغو الربيع (عربي)")
+        with c2: display_resource("logo_spring_fr.png", "Logo Printemps")
 
     with t_houses:
-        st.write("### 🖍️ نماذج المنازل (3 صور)")
         c1, c2, c3 = st.columns(3)
-        with c1: display_educational_img("house_1.jpg", "تلوين منزل الربيع 1")
-        with c2: display_educational_img("house_2.jpg", "تلوين منزل الربيع 2")
-        with c3: display_educational_img("house_3.jpg", "تلوين منزل الربيع 3")
+        with c1: display_resource("house_1.jpg", "تلوين منزل الربيع 1")
+        with c2: display_resource("house_2.jpg", "تلوين منزل الربيع 2")
+        with c3: display_resource("house_3.jpg", "تلوين منزل الربيع 3")
 
     with t_nature:
-        st.write("### 🌸 الطبيعة والحشرات (4 صور)")
         c1, c2 = st.columns(2)
-        with c1: display_educational_img("spring_flowers_1.jpg", "أزهار وفراشات 1")
-        with c2: display_educational_img("spring_flowers_2.jpg", "أزهار وفراشات 2")
+        with c1: display_resource("spring_flowers_1.jpg", "أزهار وفراشات 1")
+        with c2: display_resource("spring_flowers_2.jpg", "أزهار وفراشات 2")
         c3, c4 = st.columns(2)
-        with c3: display_educational_img("spring_flowers_3.jpg", "أزهار وفراشات 3")
-        with c4: display_educational_img("spring_flowers_4.jpg", "أزهار وفراشات 4")
+        with c3: display_resource("spring_flowers_3.jpg", "أزهار وفراشات 3")
+        with c4: display_resource("spring_flowers_4.jpg", "أزهار وفراشات 4")
 
 elif choice == "الجذاذات التربوية":
     st.subheader("📝 بنك الجذاذات (PDF)")
-    display_educational_img("fiche_printemps.pdf", "جذاذة أنشطة فصل الربيع")
+    display_resource("fiche_printemps.pdf", "جذاذة أنشطة فصل الربيع")
 
 elif choice == "تواصل معنا":
     st.success("📧 للتواصل: hassoun.mohamed993@gmail.com")
