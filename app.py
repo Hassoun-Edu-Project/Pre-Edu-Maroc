@@ -97,32 +97,32 @@ with st.sidebar:
 st.markdown(f"<div class='main-header'><h1>🌟 منصة Hassoun-Edu التربوية</h1></div>", unsafe_allow_html=True)
 
 if choice == "الرئيسية":
-    st.info("📢 فضاء مخصص لمربيات ومربي التعليم الأولي بالمغرب (FMPS).")
-    if os.path.exists("fmps_classroom.jpg"):
-        st.image("fmps_classroom.jpg", caption="فضاء تربوي متميز - الأستاذ محمد حسون", use_column_width=True)
+    st.info("📢 فضاء مخصص لمربيات ومربي التعليم الأولي.")
+    if os.path.exists("main_classroom.jpg"):
+        st.image("main_classroom.jpg", caption="فضاء تربوي متميز - الأستاذ محمد حسون", use_column_width=True)
     else:
         st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
-        st.warning("⚠️ برجاء رفع صورة الواجهة باسم fmps_classroom.jpg من لوحة الإدارة")
+        st.warning("⚠️ برجاء رفع صورة الواجهة باسم main_classroom.jpg من لوحة الإدارة")
     st.markdown("<p style='text-align:center; font-weight:bold; color:#1e3d59;'>مرحباً بكِ في فضائكِ التربوي المتميز</p>", unsafe_allow_html=True)
 
 elif choice == "مقالات ومستجدات":
     st.markdown("<h2 style='text-align: center; color: #2e7d32;'>📑 ركن المقالات والمعرفة القانونية والتربوية</h2>", unsafe_allow_html=True)
     
     with st.expander("📚 مرجعيات التعليم الأولي في المغرب"):
-        st.markdown("""<div class='article-box'><h3>مرجعيات التعليم الأولي في المغرب</h3>تستمد هذه المرحلة قوتها من مرجعيات أساسية مثل الدستور والقانون الإطار 51.17 والرؤية الاستراتيجية.</div>""", unsafe_allow_html=True)
+        st.markdown("""<div class='article-box'><h3>مرجعيات التعليم الأولي في المغرب</h3>تستمد هذه المرحلة قوتها من مرجعيات أساسية مثل الدستور والقانون الإطار 51.17 والرؤية الاستراتيجية 2015-2030.</div>""", unsafe_allow_html=True)
 
     with st.expander("🧩 المقاربات والمجالات التعلمية"):
-        st.markdown("""<div class='article-box'><h3>المجالات التعلمية الستة</h3>التعبير اللغوي، تنظيم التفكير، استكشاف الذات والمحيط، قيم العيش المشترك، الذوق الفني، والسلوك الحس حركي.</div>""", unsafe_allow_html=True)
+        st.markdown("""<div class='article-box'><h3>المجالات التعلمية الستة</h3>1. التعبير اللغوي والتواصل | 2. بناء أدوات تنظيم التفكير | 3. استكشاف الذات والمحيط | 4. تنمية الذوق الفني والجمالي | 5. تنمية السلوك الحس حركي والرياضي | 6. قيم وقواعد العيش المشترك.</div>""", unsafe_allow_html=True)
 
     with st.expander("🎭 تقنيات التنشيط الحديثة"):
-        st.markdown("""<div class='article-box'><h3>أدوات المربي المنشط</h3>لعب الأدوار، العصف الذهني، والأركان التربوية والسرد القصصي.</div>""", unsafe_allow_html=True)
+        st.markdown("""<div class='article-box'><h3>أدوات المربي المنشط</h3>لعب الأدوار، العصف الذهني، والأركان التربوية، والسرد القصصي التفاعلي، وتقنيات المحاكاة.</div>""", unsafe_allow_html=True)
 
 elif choice == "المذكرة اليومية":
     st.subheader("📁 قسم المذكرة اليومية")
     c1, c2, c3 = st.columns(3)
     with c1: display_resource("document1.pdf", "المذكرة V1")
-    with c2: display_resource("cahier journal.arabe.pdf", "المذكرة بالعربية")
-    with c3: display_resource("cahier journal.pdf", "Cahier Journal")
+    with c2: display_resource("cahier_journal_ar.pdf", "المذكرة بالعربية")
+    with c3: display_resource("cahier_journal_fr.pdf", "Cahier Journal")
 
 elif choice == "استعمالات الزمن":
     st.subheader("🕒 الجدولة الزمنية")
