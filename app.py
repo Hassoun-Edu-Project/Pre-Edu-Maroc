@@ -1,67 +1,144 @@
 import streamlit as st
-import os, requests, base64
+import os
+import requests
+import base64
 
-# 1. الإعدادات والتنسيق
-st.set_page_config(page_title="Hassoun-Edu", layout="wide")
+# 1. إعدادات الصفحة الأساسية
+st.set_page_config(
+    page_title="Hassoun-Edu | فضاء الوثائق التربوية", 
+    page_icon="🎓", 
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
+# --- دالة الرفع إلى GitHub (الميزة الأساسية في الكود القديم) ---
+def upload_to_github(file_bytes, file_name):
+    try:
+        token = st.secrets["github_token"]
+        repo = st.secrets["github_repo"]
+        url = f"https://api.github.com/repos/{repo}/contents/{file_name}"
+        headers = {"Authorization": f"token {token}", "Content-Type": "application/json"}
+        
+        get_response = requests.get(url, headers=headers)
+        sha = get_response.json().get("sha") if get_response.status_code == 200 else None
+        
+        base64_content = base64.b64encode(file_bytes).decode("utf-8")
+        data = {"message": f"تحديث/إضافة: {file_name}", "content": base64_content}
+        if sha: data["sha"] = sha
+            
+        response = requests.put(url, headers=headers, json=data)
+        return response.status_code
+    except Exception as e:
+        return str(e)
+
+# 2. إعدادات الأمان ولوحة التحكم
+ADMIN_PASSWORD = st.secrets.get("admin_password", "Hassoun_Default_2026")
+if 'logged_in' not in st.session_state: st.session_state['logged_in'] = False
+
+# 3. دالة عرض الملفات
+def display_resource(file_name, caption):
+    if os.path.exists(file_name):
+        if file_name.lower().endswith(('.png', '.jpg', '.jpeg')):
+            st.image(file_name, caption=caption, use_column_width=True)
+        with open(file_name, "rb") as f:
+            st.download_button(f"📥 تحميل {caption}", f, file_name, key=f"btn_{file_name}")
+    else:
+        st.info(f"📍 {caption} (الملف غير متوفر حالياً)")
+
+# 4. التنسيق الجمالي (CSS)
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
-    * { font-family: 'Cairo', sans-serif; }
-    .main-header { text-align: center; color: #1e3d59; background: white; padding: 20px; border-bottom: 5px solid #2e7d32; }
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+    * { font-family: 'Cairo', sans-serif !important; }
+    .stApp { background-color: #f8f9fa; }
+    .main-header { color: #1e3d59; text-align: center; background: white; border-radius: 15px; padding: 20px; border-bottom: 5px solid #2e7d32; margin-bottom: 20px; }
     .article-box { background: white; padding: 20px; border-right: 5px solid #2e7d32; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); line-height: 1.8; }
+    .stButton>button { width: 100%; border-radius: 25px; background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%); color: white; }
 </style>
 """, unsafe_allow_html=True)
 
-# 2. الدوال الأساسية
-def display_resource(file_name, caption):
-    if os.path.exists(file_name):
-        with open(file_name, "rb") as f:
-            st.download_button(f"📥 تحميل {caption}", f, file_name, key=file_name)
-    else:
-        st.info(f"📍 {caption}")
-
-# 3. القائمة الجانبية
+# 5. القائمة الجانبية (Sidebar)
 with st.sidebar:
+    st.image("https://cdn-icons-png.flaticon.com/512/3976/3976625.png", width=80)
     st.title("Hassoun-Edu")
-    choice = st.radio("🏠 القائمة:", ["الرئيسية", "مقالات ومستجدات", "المذكرة اليومية", "استعمالات الزمن", "المعينات الديداكتيكية", "تواصل معنا"])
+    choice = st.radio("🏠 القائمة الرئيسية:", [
+        "الرئيسية", 
+        "مقالات ومستجدات", 
+        "المذكرة اليومية", 
+        "استعمالات الزمن", 
+        "المعينات الديداكتيكية", 
+        "الجذاذات التربوية", 
+        "تواصل معنا"
+    ])
+    
+    st.markdown("---")
+    if not st.session_state['logged_in']:
+        pwd = st.text_input("🔐 كلمة المرور", type="password")
+        if st.button("دخول المشرف"):
+            if pwd == ADMIN_PASSWORD:
+                st.session_state['logged_in'] = True
+                st.rerun()
+    else:
+        st.success("✅ وضع المشرف نشط")
+        with st.expander("📤 رفع الوثائق"):
+            up_files = st.file_uploader("اختر الملفات", accept_multiple_files=True)
+            if up_files and st.button("🚀 بدء الرفع"):
+                for f in up_files:
+                    res = upload_to_github(f.getvalue(), f.name)
+                    if res in [200, 201]: st.toast(f"تم رفع {f.name} ✅")
+                st.balloons()
+        if st.button("تسجيل الخروج"):
+            st.session_state['logged_in'] = False
+            st.rerun()
 
-st.markdown("<div class='main-header'><h1>🌟 منصة Hassoun-Edu التربوية</h1></div>", unsafe_allow_html=True)
+# 6. المحتوى الرئيسي
+st.markdown(f"<div class='main-header'><h1>🌟 منصة Hassoun-Edu التربوية</h1></div>", unsafe_allow_html=True)
 
-# 4. المحتوى
 if choice == "الرئيسية":
     st.info("📢 فضاء مخصص لمربيات ومربي التعليم الأولي بالمغرب (FMPS).")
     st.image("https://img.freepik.com/free-vector/happy-kids-classroom-scene_1308-27158.jpg", use_column_width=True)
+    st.markdown("<p style='text-align:center; font-weight:bold; color:#1e3d59;'>مرحباً بك في فضائك التربوي المتميز</p>", unsafe_allow_html=True)
 
 elif choice == "مقالات ومستجدات":
-    st.markdown("## 📑 ركن المعرفة القانونية والتربوية")
+    st.markdown("<h2 style='text-align: center; color: #2e7d32;'>📑 ركن المعرفة القانونية والتربوية</h2>", unsafe_allow_html=True)
     st.markdown("""
     <div class='article-box'>
         <h3>📚 مرجعيات التعليم الأولي في المغرب</h3>
-        نصت المادة 8 من <b>القانون الإطار 51.17</b> على إلزامية التعليم الأولي ودمجه في التعليم الابتدائي.
+        تستمد هذه المرحلة قوتها من مرجعيات أساسية مثل <b>القانون الإطار 51.17</b> (المادة 8) الذي جعل التعليم الأولي إلزامياً، والرؤية الاستراتيجية 2015-2030.
     </div>
     <div class='article-box'>
-        <h3>🧩 المجالات التعلمية الستة</h3>
-        1. استكشاف الذات والمحيط | 2. تنظيم التفكير | 3. التعبير اللغوي | 4. الذوق الفني | 5. السلوك الحس حركي | 6. قيم العيش المشترك.
+        <h3>🧩 المجالات التعلمية الستة (المنهاج المغربي)</h3>
+        1. استكشاف الذات والمحيط | 2. بناء أدوات تنظيم التفكير | 3. التعبير اللغوي والتواصل | 4. تنمية الذوق الفني والجمالي | 5. تنمية السلوك الحس حركي | 6. قيم وقواعد العيش المشترك.
+    </div>
+    <div class='article-box'>
+        <h3>🎭 تقنيات التنشيط الحديثة</h3>
+        تعتمد على <b>لعب الأدوار</b>، <b>الأركان التربوية</b>، و<b>السرد القصصي التفاعلي</b> لتحويل التعلم إلى تجربة ممتعة ومفيدة للطفل.
     </div>
     """, unsafe_allow_html=True)
 
 elif choice == "المذكرة اليومية":
-    col1, col2 = st.columns(2)
-    with col1: display_resource("cahier_journal_ar.pdf", "المذكرة بالعربية")
-    with col2: display_resource("cahier_journal_fr.pdf", "Cahier Journal")
+    st.subheader("📁 قسم المذكرة اليومية")
+    c1, c2 = st.columns(2)
+    with c1: display_resource("cahier_journal_ar.pdf", "المذكرة بالعربية")
+    with c2: display_resource("cahier_journal_fr.pdf", "Cahier Journal")
 
 elif choice == "استعمالات الزمن":
+    st.subheader("🕒 الجدولة الزمنية")
     display_resource("takayof.pdf", "برنامج أسبوع الاستئناس")
 
 elif choice == "المعينات الديداكتيكية":
-    t1, t2 = st.tabs(["🖼️ صور", "📝 جذاذات"])
+    st.subheader("🖼️ مكتبة الوسائل التعليمية")
+    t1, t2 = st.tabs(["🏷️ الشعارات", "🏡 الوسائل المصورة"])
     with t1:
-        c1, c2 = st.columns(2)
-        with c1: display_resource("spring_1.jpg", "صورة الربيع 1")
-        with c2: display_resource("spring_2.jpg", "صورة الربيع 2")
+        col1, col2 = st.columns(2)
+        with col1: display_resource("logo_spring_ar.png", "لوغو الربيع")
+        with col2: display_resource("logo_spring_fr.png", "Logo Printemps")
     with t2:
-        display_resource("fiche_pedagogique.pdf", "الجذاذة التربوية")
+        display_resource("spring_images.pdf", "صور فصل الربيع")
+
+elif choice == "الجذاذات التربوية":
+    st.subheader("📝 بنك الجذاذات (PDF)")
+    display_resource("fiche_printemps.pdf", "جذاذة أنشطة فصل الربيع")
 
 elif choice == "تواصل معنا":
     st.success("📧 للتواصل: hassoun.mohamed993@gmail.com")
